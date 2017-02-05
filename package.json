@@ -1,0 +1,21 @@
+{
+	"name": "draw-me-a-tintin",
+	"version": "0.0.1",
+	"description": "A private joke website",
+	"main": "server.js",
+	"scripts": {
+		"start": "NODE_PATH=. node server.js"
+	},
+	"dependencies": {
+		"promise": "7.1.x",
+		"hapi": "16.1.x",
+		"vision": "4.1.x",
+		"joi": "10.2.x",
+		"inert": "4.1.x",
+		"handlebars": "4.0.x",
+		"boom": "4.2.x",
+		"winston": "2.3.x",
+		"js-yaml": "3.7.x",
+		"bcrypt": "1.0.x"
+	}
+}
