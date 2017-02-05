@@ -28,3 +28,4 @@ winston:
 paths:
   script: './src/views/script'
   style: './src/views/style'
+  image: './src/views/image'
