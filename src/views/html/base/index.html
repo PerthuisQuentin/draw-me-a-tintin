@@ -2,9 +2,21 @@
 <html>
     <head>
         <title>Draw me a Tintin</title>
+        <link rel="stylesheet" type="text/css" href="style/index.css">
+        <link href='http://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet' type='text/css'>
     </head>
     <body>
-    	<h1>Index</h1>
-        <p>Hello</p>
+        <header>
+            <h1>Draw me a Tintin</h1>
+            <img src="image/Original.png" alt="Original profile picture">
+        </header>
+        <section id="images">
+            {{#each images}}
+                <img class="image-element" src="image/{{this.file}}" alt="A profile picture">
+            {{/each}}
+        </section>
+        <footer>
+            
+        </footer>
     </body>
 </html>

@@ -29,3 +29,4 @@ paths:
   script: './src/views/script'
   style: './src/views/style'
   image: './src/views/image'
+  imageList: './src/views/image/images.json'

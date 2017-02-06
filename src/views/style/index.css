@@ -1,0 +1,28 @@
+body {
+	margin: 0px;
+}
+
+header {
+	background-color: #385D7F;
+	text-align: center;
+	padding-bottom: 10px;
+	box-shadow: 100px 0px 5px 1px rgba(0, 0, 0, 0.7); 
+}
+
+header h1 {
+	margin: 0px;
+	font: 400 70px/1.2 'Sansita one', Georgia, serif;
+	color: white;
+}
+
+section {
+	background-color: #006BB8;
+	padding-top: 10px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.image-element {
+	margin: 10px;
+}

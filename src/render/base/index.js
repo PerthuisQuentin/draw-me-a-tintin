@@ -1,13 +1,17 @@
 "use strict";
 
-const Joi = require('joi');
+const Fs = require('fs');
 
 const Config = require('src/config.js');
 const Log = require('src/logger.js');
 
+var images = JSON.parse(Fs.readFileSync(Config.paths.imageList));
+
+console.log(images);
+
 function indexHandler(request, reply) {
 	reply.view('base/index', {
-        message: 'Hello World!'
+        images: images
     });
 }
 
