@@ -7,8 +7,6 @@ const Log = require('src/logger.js');
 
 var images = JSON.parse(Fs.readFileSync(Config.paths.imageList));
 
-console.log(images);
-
 function indexHandler(request, reply) {
 	reply.view('base/index', {
         images: images
