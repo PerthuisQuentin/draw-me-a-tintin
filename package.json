@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"promise": "7.1.x",
+		"commander": "2.9.x",
 		"hapi": "16.1.x",
 		"vision": "4.1.x",
 		"joi": "10.2.x",
