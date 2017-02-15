@@ -1,10 +1,14 @@
 "use strict";
 
+// Load modules
+
 const Winston = require('winston');
 
-const Config = require('src/config.js');
+const Config = rootRequire('src/config').config;
 
-var logger = new Winston.Logger({
+
+
+module.exports = new Winston.Logger({
     levels: Config.winston.levels,
   	colors: Config.winston.colors,
   	level: 'info',
@@ -26,5 +30,3 @@ var logger = new Winston.Logger({
     	})
 	]
 });
-
-module.exports = logger;

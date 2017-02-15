@@ -2,10 +2,7 @@
 	"name": "draw-me-a-tintin",
 	"version": "0.0.1",
 	"description": "A private joke website",
-	"main": "server.js",
-	"scripts": {
-		"start": "NODE_PATH=. node server.js"
-	},
+	"main": "index.js",
 	"dependencies": {
 		"promise": "7.1.x",
 		"commander": "2.9.x",

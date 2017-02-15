@@ -1,10 +1,14 @@
 "use strict";
 
+// Load modules
+
 const Fs = require('fs');
 const Path = require('path');
 const Handlebars = require('handlebars');
 
-const Log = require('src/logger');
+const Log = rootRequire('src/logger');
+
+
 
 const API_PATH = './src/api';
 const API_REQUIRE_PATH = 'src/api';
@@ -43,10 +47,12 @@ module.exports.register.attributes = {
 	version: '1.0.0'
 };
 
+
+
 function loadRouteFolder(server, folder) {
 	Fs.readdirSync(folder.path)
 		.forEach(routeFile => {
-			let route = require(Path.join(folder.requirePath, routeFile));
+			let route = rootRequire(Path.join(folder.requirePath, routeFile));
 
 			Log.verbose('Loaded : [' + folder.name + '][' + route.method + '] ' + route.path);
 

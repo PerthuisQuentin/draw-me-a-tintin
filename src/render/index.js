@@ -1,9 +1,13 @@
 "use strict";
 
+// Load modules
+
 const Fs = require('fs');
 
-const Config = require('src/config.js');
-const Log = require('src/logger.js');
+const Config = rootRequire('src/config').config;
+const Log = rootRequire('src/logger');
+
+
 
 var images = JSON.parse(Fs.readFileSync(Config.paths.imageList));
 

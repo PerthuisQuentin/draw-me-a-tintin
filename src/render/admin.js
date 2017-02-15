@@ -1,10 +1,14 @@
 "use strict";
 
+// Load modules
+
 const Bcrypt = require('bcrypt');
 const Boom = require('boom');
 
-const Config = require('src/config.js');
-const Log = require('src/logger.js');
+const Config = rootRequire('src/config').config;
+const Log = rootRequire('src/logger');
+
+
 
 const ADMIN_KEY = process.env.DRAW_ME_KEY;
 

@@ -1,3 +1,8 @@
+# Server informations
+server:
+  host: 'localhost'
+  port: 8001
+
 # Logs level // error / warn / info / verbose / debug / silly
 logsLevel:
   console: 'silly'

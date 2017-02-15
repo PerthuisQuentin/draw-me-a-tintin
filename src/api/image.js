@@ -1,6 +1,10 @@
 "use strict";
 
-const Config = require('src/config.js');
+// Load modules
+
+const Config = rootRequire('src/config').config;
+
+
 
 module.exports = {
 	method: 'GET',
