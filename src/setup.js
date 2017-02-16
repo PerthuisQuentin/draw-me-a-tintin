@@ -10,11 +10,11 @@ const Log = rootRequire('src/logger');
 
 
 
-const API_PATH = './src/api';
+const API_PATH = __dirname + '/api';
 const API_REQUIRE_PATH = 'src/api';
-const RENDER_PATH = './src/render';
+const RENDER_PATH = __dirname + '/render';
 const RENDER_REQUIRE_PATH = 'src/render';
-const VIEWS_PATH = './src/views/html';
+const VIEWS_PATH = __dirname + '/views/html';
 
 module.exports.register = function (server, options, next) {
 	server.views({
