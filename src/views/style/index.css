@@ -4,9 +4,13 @@ body {
 
 header {
 	background-color: #385D7F;
-	text-align: center;
 	padding-bottom: 10px;
-	box-shadow: 100px 0px 5px 1px rgba(0, 0, 0, 0.7); 
+	box-shadow: 100px 0px 5px 1px rgba(0, 0, 0, 0.7);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 header h1 {
@@ -14,6 +18,15 @@ header h1 {
 	font: 400 70px/1.2 'Sansita one', Georgia, serif;
 	color: white;
 }
+
+.image-container-header {
+	position: relative;
+	width: 200px;
+}
+
+
+
+
 
 section {
 	background-color: #006BB8;
@@ -23,6 +36,44 @@ section {
 	flex-wrap: wrap;
 }
 
-.image-element {
+.image-container {
+	position: relative;
 	margin: 10px;
+}
+
+
+
+
+
+.image {
+	border-radius: 5px;
+}
+
+.textbox {
+	width: 200px;
+	height: 200px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	border-radius: 5px;
+	background-color: rgba(0,0,0,0.75);
+	-webkit-box-shadow: 0px 0px 15px 2px rgba(255,255,255,.75);
+	box-shadow: 0px 0px 15px 2px rgba(255,255,255,.75);
+	-webkit-transition: all 0.7s ease;
+	transition: all 0.7s ease;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.textbox:hover {
+	opacity:1;
+}
+
+.text {
+	font: 400 20px/1.2 'Sansita one', Georgia, serif;
+	color: white;
 }

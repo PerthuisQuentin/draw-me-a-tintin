@@ -8,11 +8,22 @@
     <body>
         <header>
             <h1>Draw me a Tintin</h1>
-            <img src="image/Original.png" alt="Original profile picture">
+            <div class="image-container-header">
+                <img class="image" src="image/Original.png" alt="Original profile picture by Kingdom Rush">
+                <div class="textbox">
+                    <p class="text">Original</p>
+                    <p class="text">by Kingdom Rush</p>
+                </div>
+            </div>
         </header>
         <section id="images">
             {{#each images}}
-                <img class="image-element" src="image/{{this.file}}" alt="A profile picture">
+                <div class="image-container">
+                    <img class="image" src="image/{{this.file}}" alt="A profile picture by {{this.author}}">
+                    <div class="textbox">
+                        <p class="text">by {{this.author}}</p>
+                    </div>
+                </div>
             {{/each}}
         </section>
         <footer>
