@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var modalImg = document.getElementById("modal-image");
 
 	var images = document.getElementsByClassName("image-container");
+	var imageHeader = document.getElementsByClassName("image-container-header")[0];
 	var modalCloseButton = document.getElementsByClassName("close")[0];
 
 	function closeModal() {
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	for(var i = 0; i < images.length; i++) {
 		images[i].addEventListener("click", openModal, true);
-	}	
+	}
 
+	imageHeader.addEventListener("click", openModal, true);
 });
