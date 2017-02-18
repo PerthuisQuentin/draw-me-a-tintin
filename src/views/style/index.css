@@ -1,6 +1,16 @@
+/*
+ *  Main
+ */
+
 body {
 	margin: 0px;
 }
+
+
+
+/*
+ *  Header
+ */
 
 header {
 	background-color: #385D7F;
@@ -26,7 +36,9 @@ header h1 {
 
 
 
-
+/*
+ *  Section
+ */
 
 section {
 	background-color: #006BB8;
@@ -43,7 +55,9 @@ section {
 
 
 
-
+/*
+ *  Images
+ */
 
 .image {
 	border-radius: 5px;
@@ -76,4 +90,61 @@ section {
 .text {
 	font: 400 20px/1.2 'Sansita one', Georgia, serif;
 	color: white;
+}
+
+
+
+/*
+ *  Modal
+ */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 200px;
+	height: 200px;
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover, .close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
 }
