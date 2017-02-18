@@ -30,6 +30,7 @@ header h1 {
 }
 
 .image-container-header {
+	cursor: pointer;
 	position: relative;
 	width: 200px;
 }
@@ -49,6 +50,7 @@ section {
 }
 
 .image-container {
+	cursor: pointer;
 	position: relative;
 	margin: 10px;
 }
