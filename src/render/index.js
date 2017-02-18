@@ -6,14 +6,11 @@ const Fs = require('fs');
 
 const Config = rootRequire('src/config').config;
 const Log = rootRequire('src/logger');
-
-
-
-var images = JSON.parse(Fs.readFileSync(Config.paths.imageList));
+const Images = rootRequire('src/images');
 
 function indexHandler(request, reply) {
 	reply.view('index', {
-        images: images
+        images: Images
     });
 }
 
