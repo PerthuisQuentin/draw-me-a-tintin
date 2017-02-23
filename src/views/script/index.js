@@ -30,13 +30,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 	function filterPicture(search) {
+		var search = searchInput.value.toLowerCase();
 		if(search == "") {
 			for(var i = 0; i < images.length; i++) {
 				images[i].style.display = "block";
 			}
 		} else {
 			for(var i = 0; i < images.length; i++) {
-				if(images[i].getAttribute("author") == search) {
+				if(images[i].getAttribute("author").toLowerCase().indexOf(search) !== -1) {
 					images[i].style.display = "block";
 				} else {
 					images[i].style.display = "none";
@@ -45,7 +46,5 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 	}
 
-	searchInput.addEventListener("keypress", function(e) {
-		if(e.keyCode === 13) filterPicture(searchInput.value);
-	}); 
+	searchInput.addEventListener("input", filterPicture); 
 });

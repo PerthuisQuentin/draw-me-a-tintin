@@ -7,6 +7,10 @@ html, body {
 	background-color: #006BB8;
 }
 
+html {
+	overflow-y: scroll;
+}
+
 body {
 	margin: 0px;
 }
