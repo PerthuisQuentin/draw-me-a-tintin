@@ -2,6 +2,11 @@
  *  Main
  */
 
+html, body {
+	height: 100%;
+	background-color: #006BB8;
+}
+
 body {
 	margin: 0px;
 }
@@ -13,10 +18,9 @@ body {
  */
 
 header {
+	height: 332px;
 	background-color: #385D7F;
 	padding-bottom: 10px;
-	box-shadow: 100px 0px 5px 1px rgba(0, 0, 0, 0.7);
-
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -30,9 +34,27 @@ header h1 {
 }
 
 .image-container-header {
+	margin-bottom: 5px;
 	cursor: pointer;
 	position: relative;
 	width: 200px;
+}
+
+
+
+/*
+ *  Search input
+ */
+
+.dark {
+	background-color: #2D4B66;
+}
+
+.search { 
+	padding: 6px 15px 6px 30px;
+	color: #BCBCBC;
+	border: 1px solid #253E54;
+	background: url('../image/search.png') no-repeat 8px 6px; 
 }
 
 
@@ -42,7 +64,6 @@ header h1 {
  */
 
 section {
-	background-color: #006BB8;
 	padding-top: 10px;
 	display: flex;
 	justify-content: center;

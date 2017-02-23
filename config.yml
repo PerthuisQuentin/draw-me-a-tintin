@@ -34,4 +34,5 @@ paths:
   script: './src/views/script'
   style: './src/views/style'
   image: './src/views/image'
-  imageList: './src/views/image/images.json'
+  picture: '../../PP_Switch_img'
+  imageList: '../../PP_Switch_img/images.json'
