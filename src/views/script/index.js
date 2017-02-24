@@ -7,12 +7,17 @@ document.addEventListener("DOMContentLoaded", function() {
 	var images = document.getElementsByClassName("image-container");
 	var imageHeader = document.getElementsByClassName("image-container-header")[0];
 	var modalCloseButton = document.getElementsByClassName("close")[0];
+	var modalContent = document.getElementsByClassName("modal-content")[0];
 
 	function closeModal() {
 		modal.style.display = "none";
 	}
 
 	modalCloseButton.addEventListener("click", closeModal);
+
+	modalContent.addEventListener("click", function(e) {
+		if(e.target == this) closeModal();
+	});
 
 
 
