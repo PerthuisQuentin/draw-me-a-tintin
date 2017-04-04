@@ -41,6 +41,7 @@ header h1 {
 	margin-bottom: 5px;
 	cursor: pointer;
 	position: relative;
+	height: 200px;
 	width: 200px;
 }
 
@@ -77,6 +78,8 @@ section {
 .image-container {
 	cursor: pointer;
 	position: relative;
+	height: 200px;
+	width: 200px;
 	margin: 10px;
 }
 
@@ -148,11 +151,6 @@ section {
     -webkit-animation-duration: 0.6s;
     animation-name: zoom;
     animation-duration: 0.6s;
-}
-
-#modal-image {
-	width: 200px;
-	height: 200px;
 }
 
 @-webkit-keyframes zoom {
