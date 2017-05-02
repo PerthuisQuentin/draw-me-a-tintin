@@ -5,13 +5,13 @@
 const Fs = require('fs');
 const Moment = require('moment');
 
-const Config = rootRequire('src/config').config;
+import config from './config';
 
 
 
-var images = JSON.parse(Fs.readFileSync(Config.paths.imageList));
+var images = JSON.parse(Fs.readFileSync(config.imagesList));
 
-images = images.sort((imageA, imageB) => {
+images = images.sort((imageA: any, imageB: any) => {
 	let dateA = Moment(imageA.date, "DD/MM/YYYY");
 	let dateB = Moment(imageB.date, "DD/MM/YYYY");
 
@@ -20,4 +20,4 @@ images = images.sort((imageA, imageB) => {
 	else return 1;
 });
 
-module.exports = images;
+export default images;

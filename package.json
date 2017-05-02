@@ -1,20 +1,28 @@
 {
 	"name": "draw-me-a-tintin",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "A private joke website",
-	"main": "index.js",
-	"dependencies": {
+  	"main": "index.ts",
+	"scripts": {
+		"start": "./node_modules/.bin/ts-node ./app.ts",
+		"dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts"
+  	},
+  	"dependencies": {
 		"promise": "7.1.x",
-		"commander": "2.9.x",
-		"hapi": "16.1.x",
-		"vision": "4.1.x",
-		"joi": "10.2.x",
-		"inert": "4.1.x",
 		"handlebars": "4.0.x",
-		"boom": "4.2.x",
+		"express": "4.15.x",
+		"body-parser": "1.17.x",
+		"express-handlebars" : "3.0.x",
+		"boom": "4.3.x",
 		"winston": "2.3.x",
-		"js-yaml": "3.7.x",
-		"bcrypt": "1.0.x",
-		"moment": "2.17.x"
-	}
-}
+		"js-yaml": "3.8.x",
+		"moment": "2.17.x",
+		"bcrypt": "1.0.x"
+	},
+  	"devDependencies": {
+		"@types/node": "7.0.x",
+		"nodemon": "1.11.x",
+		"ts-node": "3.0.x",
+		"typescript": "2.2.x"
+  	}
+}	

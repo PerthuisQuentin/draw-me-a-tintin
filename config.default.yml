@@ -1,0 +1,10 @@
+# Clone this file in 'config.dev.yml' or 'config.prod.yml' and edit it according to your environement
+
+# Server informations
+server:
+  host: 'localhost'
+  port: 8001
+
+# Images informations
+imagesPath: './images'
+imagesList: './images/images.json'

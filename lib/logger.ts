@@ -1,21 +1,29 @@
-"use strict";
-
-// Load modules
-
 const Winston = require('winston');
 
-const Config = rootRequire('src/config').config;
-
-
-
-module.exports = new Winston.Logger({
-    levels: Config.winston.levels,
-  	colors: Config.winston.colors,
+var Logger = new Winston.Logger({
+    levels: {
+        error: 0,
+        warn: 1,
+        info: 2,
+        verbose: 3,
+        debug: 4,
+        data: 5,
+        silly: 6
+    },
+  	colors: {
+        error: 'red',
+        warn: 'yellow',
+        info: 'green',
+        verbose: 'cyan',
+        debug: 'blue',
+        data: 'magenta',
+        silly: 'grey'
+      },
   	level: 'info',
     transports: [
 	    new (Winston.transports.Console)({
 	    	name: 'debug-console',
-	    	level: Config.logsLevel.console,
+	    	level: 'silly',
 	    	colorize: true,
 	    	timestamp: true,
 	    	showLevel: true,
@@ -30,3 +38,5 @@ module.exports = new Winston.Logger({
     	})
 	]
 });
+
+export default Logger;

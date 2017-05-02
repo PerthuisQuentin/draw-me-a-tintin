@@ -2,14 +2,14 @@
 <html>
     <head>
         <title>Draw me a Tintin</title>
-        <link rel="stylesheet" type="text/css" href="style/index.css">
+        <link rel="stylesheet" type="text/css" href="static/style/index.css">
         <link href='http://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <header>
             <h1>Draw me a Tintin</h1>
             <div class="image-container-header">
-                <img class="image" src="picture/Original.png" alt="Original profile picture by Kingdom Rush">
+                <img class="image" src="static/image/original.png" alt="Original profile picture by Kingdom Rush">
                 <div class="textbox">
                     <p class="text">Original</p>
                     <p class="text">by Kingdom Rush</p>
@@ -20,7 +20,7 @@
         <section id="images">
             {{#each images}}
                 <div class="image-container" author="{{this.author}}">
-                    <img class="image" src="picture/{{this.file}}" alt="A profile picture by {{this.author}}" height="200px" width="200px">
+                    <img class="image" src="images/{{this.file}}" alt="A profile picture by {{this.author}}" height="200px" width="200px">
                     <div class="textbox">
                         <p class="text">{{this.name}}</p>
                         <p class="text">by {{this.author}}</p>
@@ -36,6 +36,6 @@
             </div>
         </section>
 
-        <script src="script/index.js"></script>
+        <script src="static/script/index.js"></script>
     </body>
 </html>
