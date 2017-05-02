@@ -4,9 +4,10 @@
 	"description": "A private joke website",
   	"main": "index.ts",
 	"scripts": {
-		"start": "./node_modules/.bin/ts-node ./app.ts",
+		"prestart": "npm run build",
+		"start": "node ./build/app.js",
 		"dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
-		"build": "tsc"
+		"build": "./node_modules/.bin/tsc"
   	},
   	"dependencies": {
 		"promise": "7.1.x",
