@@ -5,7 +5,8 @@
   	"main": "index.ts",
 	"scripts": {
 		"start": "./node_modules/.bin/ts-node ./app.ts",
-		"dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts"
+		"dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
+		"build": "tsc"
   	},
   	"dependencies": {
 		"promise": "7.1.x",
