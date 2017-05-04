@@ -24,7 +24,8 @@ export default class Server {
 
         // Handlebars views engine
         this.server.engine('.hbs', ExpHbs({ 
-            extname: '.hbs' 
+            extname: '.hbs',
+            defaultLayout: 'main' 
         }));
         this.server.set('view engine', '.hbs');
 
