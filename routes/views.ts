@@ -19,6 +19,11 @@ var views: View[] = [
         path: '/login', 
         render: 'login',
         locals: {}
+    },
+    { 
+        path: '/signup', 
+        render: 'signup',
+        locals: {}
     }
 ];
 
