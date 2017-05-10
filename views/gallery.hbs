@@ -1,0 +1,19 @@
+<section id="images">
+    {{#each images}}
+        <div class="image-container" author="{{this.author}}">
+            <img class="image" src="images/{{this.file}}" alt="A profile picture by {{this.author}}" height="200px" width="200px">
+            <div class="textbox">
+                <p class="font-sansita image-text">{{this.name}}</p>
+                <p class="font-sansita image-text">by {{this.author}}</p>
+                <p class="font-sansita image-text">{{this.date}}</p>
+            </div>
+        </div>
+    {{/each}}
+</section>
+
+<div id="images-modal" class="modal">
+    <span class="close">&times;</span>
+    <div class="modal-content">
+        <img id="modal-image">
+    </div>
+</div>

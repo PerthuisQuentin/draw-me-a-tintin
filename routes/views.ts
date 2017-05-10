@@ -6,7 +6,11 @@ import images from '../lib/images';
 interface View {
     path: string,
     render: string,
-    locals: object
+    locals: {
+        styles?: string[],
+        scripts?: string[],
+        [propName: string]: any
+    }
 }
 
 var views: View[] = [
@@ -29,6 +33,19 @@ var views: View[] = [
         path: '/proposals', 
         render: 'proposals',
         locals: {}
+    },
+    { 
+        path: '/gallery', 
+        render: 'gallery',
+        locals: {
+            styles: [
+                'gallery.css'
+            ],
+            scripts: [
+                'gallery.js'
+            ],
+            images: images
+        }
     }
 ];
 
