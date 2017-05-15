@@ -8,3 +8,7 @@ server:
 # Images informations
 imagesPath: './images'
 imagesList: './images/images.json'
+
+# Mongoose
+mongoose:
+  connectionString: 'mongodb://localhost/test'

@@ -12,6 +12,9 @@ interface Config {
 		host?: string,
 		port?: number
 	},
+	mongoose?: {
+        connectionString?: string;
+    },
     environment?: string,
 	imagesPath?: string,
 	imagesList?: string
