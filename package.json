@@ -11,6 +11,7 @@
   	},
   	"dependencies": {
 		"promise": "7.1.x",
+		"mongoose": "4.9.x",
 		"handlebars": "4.0.x",
 		"express": "4.15.x",
 		"body-parser": "1.17.x",
