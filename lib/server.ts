@@ -1,10 +1,21 @@
 const Express = require('express');
 const BodyParser = require('body-parser');
 const ExpHbs  = require('express-handlebars');
+const Mongoose = require('mongoose');
 
 import Log from './logger';
 import config from './config';
 import router from './router';
+
+Mongoose.Promise = global.Promise;
+Mongoose.connect(config.mongoose.connectionString)
+	.then(() => {
+		Log.info("Connected to the db");
+	})
+	.catch((err: any) => {
+		Log.error("Can't connect to the db", err);
+	});
+
 
 export default class Server {
     private server = Express();

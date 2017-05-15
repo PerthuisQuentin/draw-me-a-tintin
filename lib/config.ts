@@ -1,6 +1,8 @@
 const Fs = require('fs');
 const Yaml = require('js-yaml');
 
+import Log from './logger';
+
 var environment: string = process.env.NODE_ENV || 'default';
 var configFile = 'config.default.yml';
 
@@ -41,9 +43,9 @@ var loadedConfig: object = {};
 
 try {
 	loadedConfig = Yaml.safeLoad(Fs.readFileSync(configFile, 'utf8'));
-	console.log(`Configuration ${configFile} loaded !`);
-} catch (e) {
-	console.log(`Can't load config file ${configFile}`, e);
+	Log.info(`Configuration ${configFile} loaded !`);
+} catch (err) {
+	Log.error(`Can't load config file ${configFile}`, err);
 	process.exit(1);
 }
 
