@@ -14,6 +14,9 @@ interface Config {
 		host?: string,
 		port?: number
 	},
+	session?: {
+        secret?: string;
+    },
 	mongoose?: {
         connectionString?: string;
     },

@@ -9,6 +9,10 @@ server:
 imagesPath: './images'
 imagesList: './images/images.json'
 
+# Sessions
+session:
+  secret: 'foobar'
+
 # Mongoose
 mongoose:
   connectionString: 'mongodb://localhost/test'

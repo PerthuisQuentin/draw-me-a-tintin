@@ -1,11 +1,17 @@
 const Express = require('express');
 const BodyParser = require('body-parser');
+const CookieParser = require('cookie-parser');
+const Session = require('express-session');
 const ExpHbs  = require('express-handlebars');
 const Mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(Session);
+const Passport = require('passport');
+const Flash = require('connect-flash');
 
 import Log from './logger';
 import config from './config';
 import router from './router';
+import strategies from './passport';
 
 Mongoose.Promise = global.Promise;
 Mongoose.connect(config.mongoose.connectionString)
@@ -26,11 +32,25 @@ export default class Server {
         this.host = config.server.host;
         this.port = config.server.port;
 
+        var sessionOptions = {
+            secret: config.session.secret,
+            resave: false,
+            saveUninitialized: false,
+            store: new MongoStore({ mongooseConnection: Mongoose.connection }),
+            cookie: { secure: false }
+        };
+
+        if (config.environment === 'production') {
+            this.server.set('trust proxy', 1)
+            sessionOptions.cookie.secure = true
+        }
+
         // Public files
         this.server.use('/static', Express.static('./public'));
         this.server.use('/images', Express.static(config.imagesPath));
 
         // Parsers
+        this.server.use(CookieParser());
         this.server.use(BodyParser.json({ type: 'application/*+json' }));
 
         // Handlebars views engine
@@ -39,6 +59,16 @@ export default class Server {
             defaultLayout: 'main' 
         }));
         this.server.set('view engine', '.hbs');
+
+        // Sessions
+        this.server.use(Session(sessionOptions));
+
+        // Passeport
+        this.server.use(Passport.initialize());
+        this.server.use(Passport.session());
+
+        // Flash
+        this.server.use(Flash());
 
         // Routes
         this.server.use('/', router);
