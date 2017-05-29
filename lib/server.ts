@@ -1,4 +1,5 @@
 const Express = require('express');
+const Morgan = require("morgan");
 const BodyParser = require('body-parser');
 const CookieParser = require('cookie-parser');
 const Session = require('express-session');
@@ -10,8 +11,8 @@ const Flash = require('connect-flash');
 
 import Log from './logger';
 import config from './config';
-import router from './router';
-import strategies from './passport';
+import setupRouter from './router';
+import setupStrategy from './passport';
 
 Mongoose.Promise = global.Promise;
 Mongoose.connect(config.mongoose.connectionString)
@@ -21,7 +22,6 @@ Mongoose.connect(config.mongoose.connectionString)
 	.catch((err: any) => {
 		Log.error("Can't connect to the db", err);
 	});
-
 
 export default class Server {
     private server = Express();
@@ -40,9 +40,13 @@ export default class Server {
             cookie: { secure: false }
         };
 
-        if (config.environment === 'production') {
+        if(config.environment === 'production') {
             this.server.set('trust proxy', 1)
             sessionOptions.cookie.secure = true
+        }
+
+        if(config.environment === 'development') {
+            this.server.use(Morgan('dev'));
         }
 
         // Public files
@@ -51,7 +55,8 @@ export default class Server {
 
         // Parsers
         this.server.use(CookieParser());
-        this.server.use(BodyParser.json({ type: 'application/*+json' }));
+        this.server.use(BodyParser.json());
+        this.server.use(BodyParser.urlencoded({ extended: true }));
 
         // Handlebars views engine
         this.server.engine('.hbs', ExpHbs({ 
@@ -64,6 +69,7 @@ export default class Server {
         this.server.use(Session(sessionOptions));
 
         // Passeport
+        setupStrategy(Passport);
         this.server.use(Passport.initialize());
         this.server.use(Passport.session());
 
@@ -71,7 +77,7 @@ export default class Server {
         this.server.use(Flash());
 
         // Routes
-        this.server.use('/', router);
+        this.server.use('/', setupRouter(Passport));
     }
 
     public start(callback?: any) {

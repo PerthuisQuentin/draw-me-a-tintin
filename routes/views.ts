@@ -3,60 +3,58 @@ const Express = require('express');
 import Log from '../lib/logger';
 import images from '../lib/images';
 
-interface View {
-    path: string,
-    render: string,
-    locals: {
-        styles?: string[],
-        scripts?: string[],
-        [propName: string]: any
-    }
-}
-
-var views: View[] = [
-    { 
-        path: '/', 
-        render: 'index',
-        locals: {}
-    },
-    { 
-        path: '/login', 
-        render: 'login',
-        locals: {}
-    },
-    { 
-        path: '/signup', 
-        render: 'signup',
-        locals: {}
-    },
-    { 
-        path: '/proposals', 
-        render: 'proposals',
-        locals: {}
-    },
-    { 
-        path: '/gallery', 
-        render: 'gallery',
-        locals: {
-            styles: [
-                'gallery.css'
-            ],
-            scripts: [
-                'gallery.js'
-            ],
-            images: images
-        }
-    }
-];
-
 var router = Express.Router();
 
-for (let view of views) {
-    router.get(view.path, function(request: any, response: any) {
-        response.render(view.render, view.locals);
-    });
+// Index
+router.get("/", function(request: any, response: any) {
+    response.render("index");
+});
 
-    Log.verbose('Loaded : [VIEW][GET] ' + view.path);
-}
+Log.verbose('Loaded : [VIEW][GET] /');
+
+
+// Login
+router.get("/login", function(request: any, response: any) {
+    response.render("login", {
+        message: request.flash('loginMessage')
+    });
+});
+
+Log.verbose('Loaded : [VIEW][GET] /login');
+
+
+// Signup
+router.get("/signup", function(request: any, response: any) {
+    response.render("signup", {
+        message: request.flash('signupMessage')
+    });
+});
+
+Log.verbose('Loaded : [VIEW][GET] /signup');
+
+
+// Proposals
+router.get("/proposals", function(request: any, response: any) {
+    response.render("proposals");
+});
+
+Log.verbose('Loaded : [VIEW][GET] /proposals');
+
+
+
+// Proposals
+router.get("/gallery", function(request: any, response: any) {
+    response.render("gallery", {
+        styles: [
+            'gallery.css'
+        ],
+        scripts: [
+            'gallery.js'
+        ],
+        images: images
+    });
+});
+
+Log.verbose('Loaded : [VIEW][GET] /gallery');
 
 export default router;

@@ -1,11 +1,16 @@
 const Express = require('express');
 
 import Log from './logger';
-
-var router = Express.Router();
-
 import Views from '../routes/views';
+import setupAuth from '../routes/auth';
 
-router.use('/', Views);
+function setupRouter(passport: any) {
+    var router = Express.Router();
 
-export default router;
+    router.use('/', Views);
+    router.use('/', setupAuth(passport));
+
+    return router;
+}
+
+export default setupRouter;

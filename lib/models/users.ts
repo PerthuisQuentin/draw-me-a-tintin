@@ -2,9 +2,9 @@ const Mongoose = require('mongoose');
 const Bcrypt = require('bcrypt');
 
 var userSchema = Mongoose.Schema({
-    local            : {
-        email        : String,
-        password     : String,
+    local: {
+        email: String,
+        password: String,
     },
     username: String,
     role: String
