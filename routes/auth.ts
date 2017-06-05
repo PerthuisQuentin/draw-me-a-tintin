@@ -15,6 +15,11 @@ function setupAuth(passport: any) {
         failureFlash : true
     }));
 
+    router.get('/logout', function(request: any, response: any) {
+        request.logout();
+        response.redirect('/');
+    });
+
     return router;
 }
 
