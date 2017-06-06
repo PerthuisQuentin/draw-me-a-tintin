@@ -23,6 +23,7 @@
 		"passport": "0.3.x",
 		"passport-local": "1.0.x",
 		"connect-flash": "0.1.x",
+		"joi": "10.5.x",
 		"boom": "4.3.x",
 		"winston": "2.3.x",
 		"js-yaml": "3.8.x",
