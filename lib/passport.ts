@@ -19,16 +19,20 @@ function setupLocalStrategy(passport: any) {
             passwordField : 'password',
             passReqToCallback : true
         },
-        function(req: any, email: any, password: any, done: any) {
+        function(request: any, email: any, password: any, done: any) {
+
+            console.log(request.body);
+
             Users.findOne({ 'email' :  email }, function(err: any, user: any) {
                 if(err) return done(err);
 
                 if(user) {
-                    return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    return done(null, false, request.flash('signupMessage', 'That email is already taken.'));
                 } else {
                     var newUser = new Users();
 
-                    newUser.email    = email;
+                    newUser.email = email;
+                    newUser.username = request.body.username;
                     newUser.password = newUser.generateHash(password);
 
                     newUser.save(function(err: any) {
@@ -46,16 +50,16 @@ function setupLocalStrategy(passport: any) {
             passwordField : 'password',
             passReqToCallback : true
         },
-        function(req: any, email: any, password: any, done: any) {
+        function(request: any, email: any, password: any, done: any) {
 
             Users.findOne({ 'email' :  email }, function(err: any, user: any) {
                 if(err) return done(err);
 
                 if(!user) 
-                    return done(null, false, req.flash('loginMessage', 'No user found.'));
+                    return done(null, false, request.flash('loginMessage', 'No user found.'));
 
                 if(!user.validPassword(password))
-                    return done(null, false, req.flash('loginMessage', 'Wrong password.'));
+                    return done(null, false, request.flash('loginMessage', 'Wrong password.'));
 
                 return done(null, user);
             });

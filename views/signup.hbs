@@ -5,14 +5,34 @@
         <div class="alert alert-danger">{{ message }}</div>
     {{/if}}
 
-    <form action="/signup" method="post">
-        <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" name="email">
+    <form id="signup-form" action="/signup" method="post">        
+        <div id="email-group" class="form-group has-feedback">
+            <label class="control-label" for="email-input">Email</label>
+            <input id="email-input" type="text" class="form-control" aria-describedby="email-status" name="email">
+            <span id="email-helper" class="help-block sr-only">Help !</span>
+            <span id="email-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
+            <span id="email-status" class="sr-only">(success)</span>
         </div>
-        <div class="form-group">
-            <label>Mot de passe</label>
-            <input type="password" class="form-control" name="password">
+
+        <div id="username-group" class="form-group has-feedback">
+            <label class="control-label" for="username-input">Nom d'utilisateur</label>
+            <input id="username-input" type="text" class="form-control" aria-describedby="username-status" name="username">
+            <span id="username-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
+            <span id="username-status" class="sr-only">(success)</span>
+        </div>
+
+        <div id="password-group" class="form-group has-feedback">
+            <label class="control-label" for="password-input">Mot de passe</label>
+            <input id="password-input" type="password" class="form-control" aria-describedby="password-status" name="password">
+            <span id="password-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
+            <span id="password-status" class="sr-only">(success)</span>
+        </div>
+
+        <div id="confirm-password-group" class="form-group has-feedback">
+            <label class="control-label" for="confirm-password-input">Confirmer le mot de passe</label>
+            <input id="confirm-password-input" type="password" class="form-control" aria-describedby="confirm-password-status" name="confirm-password">
+            <span id="confirm-password-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
+            <span id="confirm-password-status" class="sr-only">(success)</span>
         </div>
 
         <button type="submit" class="btn btn-warning btn-lg">Signup</button>

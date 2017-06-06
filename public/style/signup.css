@@ -1,0 +1,9 @@
+.form-group {
+    margin-bottom: 40px;
+    clear: left;
+}
+
+.help-block {
+    position: relative;
+    float: left;
+}

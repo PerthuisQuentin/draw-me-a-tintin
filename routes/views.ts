@@ -21,7 +21,7 @@ Log.verbose('Loaded : [VIEW][GET] /');
 // Login
 router.get("/login", function(request: any, response: any) {
     request.locals.message = request.flash('loginMessage');
-    
+
     response.render("login", request.locals);
 });
 
@@ -31,6 +31,8 @@ Log.verbose('Loaded : [VIEW][GET] /login');
 
 // Signup
 router.get("/signup", function(request: any, response: any) {
+    request.locals.styles = ['signup.css'];
+    request.locals.scripts = ['signup.js'];
     request.locals.message = request.flash('signupMessage');
 
     response.render("signup", request.locals);

@@ -3,8 +3,8 @@ const Bcrypt = require('bcrypt');
 
 var userSchema = Mongoose.Schema({
     email: String,
-    password: String,
     username: String,
+    password: String,
     role: String
 });
 
