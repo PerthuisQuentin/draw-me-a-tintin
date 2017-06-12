@@ -3,6 +3,7 @@ const Joi = require('joi');
 const Boom = require('boom');
 
 import Users from './models/users';
+import { joiErrorStringify } from './utils';
  
 const signupSchema = Joi.object().keys({
     email: Joi
@@ -26,7 +27,7 @@ function verifySignup(data: any): Promise<any> {
         // Check form datas validity
         Joi.validate(data, signupSchema, { abortEarly: false }, (err: any, value: any) => {
             if(err)
-                return reject(err);
+                return reject(joiErrorStringify(err));
             
             // Check email availability
             Users.findOne({
