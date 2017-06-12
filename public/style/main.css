@@ -1,4 +1,15 @@
+body {
+	background-color: #006BB8;
+}
 
+.navbar-default .navbar-nav > li > a:hover, 
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-brand:hover, 
+.navbar-default .navbar-brand:focus
+{
+	/*color: #FDD000;*/
+	color: #67C8FF;
+}
 
 #brand-logo {
 	margin-top: 5px;

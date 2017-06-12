@@ -1,15 +1,70 @@
 const LocalStrategy = require('passport-local').Strategy;
+const Joi = require('joi');
+const Boom = require('boom');
 
 import Users from './models/users';
+ 
+const signupSchema = Joi.object().keys({
+    email: Joi
+        .string()
+        .email()
+        .required(),
+    username: Joi
+        .string()
+        .alphanum()
+        .min(3).max(32)
+        .required(),
+    password: Joi
+        .string()
+        .min(3).max(64)
+        .required()
+});
+
+// Check if datas respect the signup restrictions, and the email and username availability
+function verifySignup(data: any): Promise<any> {
+    return new Promise((resolve: any,reject: any) => {
+        // Check form datas validity
+        Joi.validate(data, signupSchema, { abortEarly: false }, (err: any, value: any) => {
+            if(err)
+                return reject(err);
+            
+            // Check email availability
+            Users.findOne({
+                    'email' :  data.email 
+                })
+                .then((user: any) => {
+                    if(user)
+                        reject('mailAlreadyTaken');
+
+                    // Check username availability
+                    Users.findOne({ 
+                            'username' :  data.username 
+                        })
+                        .then((user: any) => {
+                            if(user)
+                                reject('usernameAlreadyTaken');
+
+                            resolve(data);
+                        })
+                        .catch((err: any) => {
+                            Boom.serverUnavailable('databaseError');
+                        });
+                })
+                .catch((err: any) => {
+                    Boom.serverUnavailable('databaseError');
+                });
+        });
+    });
+}
 
 function setupLocalStrategy(passport: any) {
 
-    passport.serializeUser(function(user: any, done: any) {
+    passport.serializeUser((user: any, done: any) => {
         done(null, user.id);
     });
 
-    passport.deserializeUser(function(id: any, done: any) {
-        Users.findById(id, function(err: any, user: any) {
+    passport.deserializeUser((id: any, done: any) => {
+        Users.findById(id, (err: any, user: any) => {
             done(err, user);
         });
     });
@@ -19,29 +74,27 @@ function setupLocalStrategy(passport: any) {
             passwordField : 'password',
             passReqToCallback : true
         },
-        function(request: any, email: any, password: any, done: any) {
+        (request: any, email: any, password: any, done: any) => {
 
             console.log(request.body);
 
-            Users.findOne({ 'email' :  email }, function(err: any, user: any) {
-                if(err) return done(err);
-
-                if(user) {
-                    return done(null, false, request.flash('signupMessage', 'That email is already taken.'));
-                } else {
+            verifySignup(request.body)
+                .then((data) => {
                     var newUser = new Users();
 
-                    newUser.email = email;
-                    newUser.username = request.body.username;
-                    newUser.password = newUser.generateHash(password);
+                    newUser.email = data.email;
+                    newUser.username = data.username;
+                    newUser.password = newUser.generateHash(data.password);
 
-                    newUser.save(function(err: any) {
-                        if(err) throw err;
+                    newUser.save((err: any) => {
+                        if(err) done(Boom.serverUnavailable('databaseError'));
 
-                        return done(null, newUser);
+                        done(null, newUser);
                     });
-                }
-            });    
+                })
+                .catch((err: any) => {
+                    done(null, false, request.flash('signupError', err));
+                });  
         }
     ));
 

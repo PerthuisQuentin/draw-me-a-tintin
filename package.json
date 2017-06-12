@@ -1,39 +1,41 @@
 {
-	"name": "draw-me-a-tintin",
-	"version": "0.2.0",
-	"description": "A private joke website",
-  	"main": "index.ts",
-	"scripts": {
-		"prestart": "npm run build",
-		"start": "node ./build/app.js",
-		"dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
-		"build": "./node_modules/.bin/tsc"
-  	},
-  	"dependencies": {
-		"promise": "7.1.x",
-		"mongoose": "4.9.x",
-		"connect-mongo": "1.3.x",
-		"handlebars": "4.0.x",
-		"express": "4.15.x",
-		"morgan": "1.8.x",
-		"body-parser": "1.17.x",
-		"cookie-parser": "1.4.x",
-		"express-session": "1.15.x",
-		"express-handlebars" : "3.0.x",
-		"passport": "0.3.x",
-		"passport-local": "1.0.x",
-		"connect-flash": "0.1.x",
-		"joi": "10.5.x",
-		"boom": "4.3.x",
-		"winston": "2.3.x",
-		"js-yaml": "3.8.x",
-		"moment": "2.18.x",
-		"bcrypt": "1.0.x"
-	},
-  	"devDependencies": {
-		"@types/node": "7.0.x",
-		"nodemon": "1.11.x",
-		"ts-node": "3.0.x",
-		"typescript": "2.3.x"
-  	}
-}	
+  "name": "draw-me-a-tintin",
+  "version": "0.2.0",
+  "description": "A private joke website",
+  "main": "index.ts",
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "node ./build/app.js",
+    "dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
+    "build": "./node_modules/.bin/tsc"
+  },
+  "dependencies": {
+    "promise": "7.1.x",
+    "mongoose": "4.9.x",
+    "connect-mongo": "1.3.x",
+    "handlebars": "4.0.x",
+    "express": "4.15.x",
+    "morgan": "1.8.x",
+    "body-parser": "1.17.x",
+    "cookie-parser": "1.4.x",
+    "express-session": "1.15.x",
+    "express-handlebars": "3.0.x",
+    "passport": "0.3.x",
+    "passport-local": "1.0.x",
+    "connect-flash": "0.1.x",
+    "joi": "10.5.x",
+    "boom": "4.3.x",
+    "winston": "2.3.x",
+    "js-yaml": "3.8.x",
+    "moment": "2.18.x",
+    "bcrypt": "1.0.x"
+  },
+  "devDependencies": {
+    "@types/core-js": "^0.9.41",
+    "@types/node": "7.0.x",
+    "core-js": "^2.4.1",
+    "nodemon": "1.11.x",
+    "ts-node": "3.0.x",
+    "typescript": "2.3.x"
+  }
+}

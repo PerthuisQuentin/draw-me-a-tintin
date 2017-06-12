@@ -123,9 +123,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         console.log(this);
 
-        if(!mailRegex.test(emailForm.input.val())) {
-            return false;
-        }
+        // if(!mailRegex.test(emailForm.input.val())) {
+        //     return false;
+        // }
 
         confirmPasswordForm.input.prop('disabled', true);
 

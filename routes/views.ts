@@ -33,7 +33,7 @@ Log.verbose('Loaded : [VIEW][GET] /login');
 router.get("/signup", function(request: any, response: any) {
     request.locals.styles = ['signup.css'];
     request.locals.scripts = ['signup.js'];
-    request.locals.message = request.flash('signupMessage');
+    request.locals.message = request.flash('signupError');
 
     response.render("signup", request.locals);
 });
