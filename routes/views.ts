@@ -2,12 +2,15 @@ const Express = require('express');
 
 import Log from '../lib/logger';
 import images from '../lib/images';
-import { addLocals, checkLogin } from '../lib/middleware';
+import { 
+    guessLanguage,
+    setupViewsLocals
+} from '../lib/middleware';
 
 var router = Express.Router();
 
-router.use(addLocals);
-router.use(checkLogin);
+router.use(guessLanguage);
+router.use(setupViewsLocals);
 
 // Index
 router.get("/", function(request: any, response: any) {

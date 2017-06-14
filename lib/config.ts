@@ -11,7 +11,7 @@ if(environment === 'development') configFile = 'config.dev.yml';
 
 interface Config {
 	website?: {
-		title: string
+		title?: string
 	},
 	server?: {
 		host?: string,
@@ -23,7 +23,10 @@ interface Config {
 	mongoose?: {
         connectionString?: string;
     },
-	languages?: string[],
+	language?: {
+		locales?: string[],
+		default?: string
+	},
     environment?: string,
 	imagesPath?: string,
 	imagesList?: string

@@ -22,4 +22,6 @@ mongoose:
   connectionString: 'mongodb://localhost/dawme'
 
 # Language
-languages: ["en"]
+language: 
+  locales: ["en"]
+  default: "en"

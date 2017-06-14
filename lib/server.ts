@@ -8,7 +8,6 @@ const Mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(Session);
 const Passport = require('passport');
 const Flash = require('connect-flash');
-const I18n = require("i18n");
 
 import Log from './logger';
 import config from './config';
@@ -67,13 +66,6 @@ export default class Server {
             helpers: hbsHelpers
         }));
         this.server.set('view engine', '.hbs');
-
-        // I18n
-        I18n.configure({
-            locales: config.languages,
-            directory: './locales'
-        });
-        this.server.use(I18n.init);
 
         // Sessions
         this.server.use(Session(sessionOptions));
