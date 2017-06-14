@@ -10,6 +10,9 @@ if(environment === 'production') configFile = 'config.prod.yml';
 if(environment === 'development') configFile = 'config.dev.yml';
 
 interface Config {
+	website?: {
+		title: string
+	},
 	server?: {
 		host?: string,
 		port?: number
@@ -20,6 +23,7 @@ interface Config {
 	mongoose?: {
         connectionString?: string;
     },
+	languages?: string[],
     environment?: string,
 	imagesPath?: string,
 	imagesList?: string

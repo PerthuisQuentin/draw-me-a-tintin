@@ -8,11 +8,13 @@ const Mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(Session);
 const Passport = require('passport');
 const Flash = require('connect-flash');
+const I18n = require("i18n");
 
 import Log from './logger';
 import config from './config';
 import setupRouter from './router';
 import setupStrategy from './passport';
+import * as hbsHelpers from './helpers';
 
 Mongoose.Promise = global.Promise;
 Mongoose.connect(config.mongoose.connectionString)
@@ -61,9 +63,17 @@ export default class Server {
         // Handlebars views engine
         this.server.engine('.hbs', ExpHbs({ 
             extname: '.hbs',
-            defaultLayout: 'main' 
+            defaultLayout: 'main',
+            helpers: hbsHelpers
         }));
         this.server.set('view engine', '.hbs');
+
+        // I18n
+        I18n.configure({
+            locales: config.languages,
+            directory: './locales'
+        });
+        this.server.use(I18n.init);
 
         // Sessions
         this.server.use(Session(sessionOptions));

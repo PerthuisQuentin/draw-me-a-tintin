@@ -20,6 +20,7 @@
     "cookie-parser": "1.4.x",
     "express-session": "1.15.x",
     "express-handlebars": "3.0.x",
+    "i18n": "0.8.x",
     "passport": "0.3.x",
     "passport-local": "1.0.x",
     "connect-flash": "0.1.x",

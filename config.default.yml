@@ -1,5 +1,9 @@
 # Clone this file in 'config.dev.yml' or 'config.prod.yml' and edit it according to your environement
 
+# Website informations
+website:
+  title: "Draw Me Something"
+
 # Server informations
 server:
   host: 'localhost'
@@ -15,4 +19,7 @@ session:
 
 # Mongoose
 mongoose:
-  connectionString: 'mongodb://localhost/test'
+  connectionString: 'mongodb://localhost/dawme'
+
+# Language
+languages: ["en"]
