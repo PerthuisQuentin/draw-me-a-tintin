@@ -1,37 +1,23 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    function getFormGroup(groupName) {
+        return {
+            group: $("#" + groupName + "-group"),
+            input: $("#" + groupName + "-input"),
+            helper: $("#" + groupName + "-helper"),
+            feedback: $("#" + groupName + "-feedback"),
+            status: $("#" + groupName + "-status")
+        };
+    }
+    
     var mailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     var signupForm = $("#signup-form");
 
-    var emailForm = {
-        group: $("#email-group"),
-        input: $("#email-input"),
-        helper: $("#email-helper"),
-        feedback: $("#email-feedback"),
-        status: $("#email-status")
-    };
-
-    var usernameForm = {
-        group: $("#username-group"),
-        input: $("#username-input"),
-        feedback: $("#username-feedback"),
-        status: $("#username-status")
-    };
-
-    var passwordForm = {
-        group: $("#password-group"),
-        input: $("#password-input"),
-        feedback: $("#password-feedback"),
-        status: $("#password-status")
-    };
-
-    var confirmPasswordForm = {
-        group: $("#confirm-password-group"),
-        input: $("#confirm-password-input"),
-        feedback: $("#confirm-password-feedback"),
-        status: $("#confirm-password-status")
-    };
+    var emailForm = getFormGroup("email");
+    var usernameForm = getFormGroup("username");
+    var passwordForm = getFormGroup("password");
+    var confirmPasswordForm = getFormGroup("confirm-password");
 
     function toggleInputState(form, state) {
         switch(state) {

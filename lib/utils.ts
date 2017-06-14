@@ -19,5 +19,34 @@ export function mergeInCamelCase(...words: string[]) : string {
 }
 
 export function joiErrorStringify(err: any): any {
-    return "";
+
+    if(!err.isJoi)
+        return null;
+
+    var result: any = {};
+
+    for(var detail of err.details) {
+
+        var name = detail.context.key;
+        var type = detail.type.split('.')[1];
+        var value;
+
+        var error = mergeInCamelCase(name, type);
+
+        switch(type) { 
+            case "min":
+            case "max": { 
+                value = detail.context.limit;
+                break; 
+            }
+        } 
+        
+        if(value) {
+            result[error] = value;
+        } else {
+            result[error] = name
+        }
+    }
+
+    return result;
 }
