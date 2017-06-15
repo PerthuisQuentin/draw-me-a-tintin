@@ -2,6 +2,7 @@ export function capitalize(word: string) : string {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+// Merge multiple strings in one without space and capitalize each words (camelCase)
 export function mergeInCamelCase(...words: string[]) : string {
     
     if(!words.length) 
@@ -18,6 +19,24 @@ export function mergeInCamelCase(...words: string[]) : string {
     return result;
 }
 
+// Return first element of accepted present in searchIn
+export function findFirstMatch<T>(searchIn: T[], accepted: T[]) : T {
+
+    var firstFound: T;
+
+    accepted.some((element: T) : boolean => {
+        if(searchIn.includes(element)) {
+            firstFound = element;
+            return true;
+        }
+
+        return false;
+    });
+    
+    return firstFound;
+}
+
+// Transform a Joi Error in a string
 export function joiErrorStringify(err: any): any {
 
     if(!err.isJoi)

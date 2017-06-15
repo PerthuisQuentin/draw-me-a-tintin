@@ -70,14 +70,13 @@ function setupLocalStrategy(passport: any) {
         });
     });
 
+    // Passport Signup
     passport.use('local-signup', new LocalStrategy({
             usernameField : 'email',
             passwordField : 'password',
             passReqToCallback : true
         },
-        (request: any, email: any, password: any, done: any) => {
-
-            console.log(request.body);
+        (request: any, email: any, password: any, next: any) => {
 
             verifySignup(request.body)
                 .then((data) => {
@@ -86,36 +85,42 @@ function setupLocalStrategy(passport: any) {
                     newUser.email = data.email;
                     newUser.username = data.username;
                     newUser.password = newUser.generateHash(data.password);
+                    newUser.language = request.session.language;
 
                     newUser.save((err: any) => {
-                        if(err) done(Boom.serverUnavailable('databaseError'));
+                        if(err) next(Boom.serverUnavailable('databaseError'));
 
-                        done(null, newUser);
+                        request.session.user = newUser.toPublicObject();
+
+                        next(null, newUser);
                     });
                 })
                 .catch((err: any) => {
-                    done(null, false, request.flash('signupError', err));
+                    next(null, false, request.flash('signupError', err));
                 });  
         }
     ));
 
+    // Passport Login
     passport.use('local-login', new LocalStrategy({
             usernameField : 'email',
             passwordField : 'password',
             passReqToCallback : true
         },
-        function(request: any, email: any, password: any, done: any) {
+        function(request: any, email: any, password: any, next: any) {
 
             Users.findOne({ 'email' :  email }, function(err: any, user: any) {
-                if(err) return done(err);
+                if(err) return next(err);
 
                 if(!user) 
-                    return done(null, false, request.flash('loginMessage', 'No user found.'));
+                    return next(null, false, request.flash('loginMessage', 'No user found.'));
 
                 if(!user.validPassword(password))
-                    return done(null, false, request.flash('loginMessage', 'Wrong password.'));
+                    return next(null, false, request.flash('loginMessage', 'Wrong password.'));
 
-                return done(null, user);
+                request.session.user = user.toPublicObject();
+
+                return next(null, user);
             });
     }));
 };

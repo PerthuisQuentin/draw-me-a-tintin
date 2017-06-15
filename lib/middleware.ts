@@ -1,4 +1,5 @@
 import config from './config';
+import { findFirstMatch } from './utils';
 
 export function setupViewsLocals(request: any, response: any, next: any) {
     if(request.locals === undefined)
@@ -10,27 +11,36 @@ export function setupViewsLocals(request: any, response: any, next: any) {
     // Passeport authentification
     request.locals.isAuthenticated = request.isAuthenticated();
 
+    console.log(request.session);
+
     next();
 }
 
 export function guessLanguage(request: any, response: any, next: any) {
 
-    let acceptsLanguages = request.acceptsLanguages()
+    // Skip if language already defined
+    if(request.session.language) return next();
 
-    if(acceptsLanguages && acceptsLanguages.length > 0) {
-        acceptsLanguages.some((element: any) => {
-            if(config.language.locales.includes(element)) {
-                request.language = element;
-                return true;
-            }
+    let acceptsLanguages: string[] = request.acceptsLanguages();
 
-            return false;
-        });
+    // #1 Check user's language
+    if(request.session.user && request.session.user.language) {
+        request.session.language = request.session.user.language;
+        return next();
     }
 
-    if(!request.language) {
-        request.language = config.language.default;
+    // #2 Check accepted languages
+    if(acceptsLanguages) {
+        let firstFound: string = findFirstMatch<string>(config.language.locales, acceptsLanguages);
+
+        if(firstFound) {
+            request.session.language = firstFound
+            return next();
+        }
     }
 
-    next();
+    // #3 Take default language
+    request.session.language = config.language.default;
+
+    return next();
 }

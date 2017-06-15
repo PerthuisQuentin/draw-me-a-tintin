@@ -3,13 +3,11 @@ const Express = require('express');
 import Log from '../lib/logger';
 import images from '../lib/images';
 import { 
-    guessLanguage,
     setupViewsLocals
 } from '../lib/middleware';
 
 var router = Express.Router();
 
-router.use(guessLanguage);
 router.use(setupViewsLocals);
 
 // Index
