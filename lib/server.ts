@@ -14,7 +14,7 @@ import config from './config';
 import setupRouter from './router';
 import setupStrategy from './passport';
 import * as hbsHelpers from './helpers';
-import I18n from './i18n';
+import * as I18n from './i18n';
 
 Mongoose.Promise = global.Promise;
 Mongoose.connect(config.mongoose.connectionString)
@@ -85,6 +85,7 @@ export default class Server {
             locales: config.language.locales,
             defaultLocale: config.language.default
         });
+        this.server.use(I18n.init);
 
         // Routes
         this.server.use('/', setupRouter(Passport));

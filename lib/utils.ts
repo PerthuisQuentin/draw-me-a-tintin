@@ -69,3 +69,22 @@ export function joiErrorStringify(err: any): any {
 
     return result;
 }
+
+// Flatten an object 
+export function flattenObject(datas: any) {
+    let newDatas: any = {};
+
+    for(let key in datas) {
+        if(typeof datas[key] == 'object') {
+            let flattened: any = flattenObject(datas[key]);
+
+            for(let subKey in flattened) {
+                newDatas[key + '.' + subKey] = flattened[subKey];
+            }
+        } else {
+            newDatas[key] = datas[key];
+        }
+    }
+
+    return newDatas;
+}

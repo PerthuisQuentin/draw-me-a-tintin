@@ -4,5 +4,7 @@ nav:
   home: "Home"
   gallery: "Gallery"
   proposals: "Proposals"
+
+auth:
   login: "Login"
   signup: "Signup"

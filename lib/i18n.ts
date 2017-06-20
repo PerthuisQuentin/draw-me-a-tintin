@@ -3,6 +3,11 @@ const Path = require('path');
 const Yaml = require('js-yaml');
 
 import Log from './logger';
+import config from './config';
+import { 
+    findFirstMatch,
+    flattenObject
+ } from './utils';
 
 interface i18nOptions {
     directory?: string,
@@ -10,59 +15,87 @@ interface i18nOptions {
     defaultLocale?: string
 }
 
-export default class I18n {
-    private static directory: any;
-    private static locales: any;
-    private static defaultLocale: any;
-    private static localesDatas: any = {};
+var directory: string = './locales';
+var locales: string[] = ['en'];
+var defaultLocale: string = 'en';
+var localesDatas: any = {};
 
-    private static checkFiles() {
-        if(!Fs.existsSync(this.directory)) {
-            Fs.mkdirSync(this.directory);
-        }
+export function configure(options: i18nOptions) {
+    if(options.directory)
+        directory = options.directory;
 
-        for(let locale of this.locales) {
-            let file = Path.join(this.directory, locale + '.yml');
+    if(options.locales)
+        locales = options.locales;
 
-            if(!Fs.existsSync(file)) {
-                Fs.writeFileSync(file, "# " + locale);
-            }
+    if(options.defaultLocale)
+        defaultLocale = options.defaultLocale;
+
+    checkFiles();
+    loadLocales();
+}
+
+export function init(request: any, response: any, next: any) {
+    guessLanguage(request);
+    
+    next();
+}
+
+export function get(locale: string, id: string) {
+    return localesDatas[locale][id];
+}
+
+function guessLanguage(request: any) {
+
+    // Skip if language already defined
+    if(request.locale) return;
+
+    let acceptsLanguages: string[] = request.acceptsLanguages();
+
+    // #1 Check user's language
+    if(request.session.user && request.session.user.language) {
+        request.locale = request.session.user.language;
+        return;
+    }
+
+    // #2 Check accepted languages
+    if(acceptsLanguages) {
+        let firstFound: string = findFirstMatch<string>(config.language.locales, acceptsLanguages);
+
+        if(firstFound) {
+            request.locale = firstFound;
+            return;
         }
     }
 
-    private static loadLocales() {
-        for(let locale of this.locales) {
-            let file = Path.join(this.directory, locale + '.yml');
+    // #3 Take default language
+    request.locale = config.language.default;
+}
 
-            try {
-                this.localesDatas[locale] = Yaml.safeLoad(Fs.readFileSync(file, 'utf8'));
-            } catch (err) {
-                Log.error(`Can't load locale file ${file}`, err);
-                process.exit(1);
-            }
+function checkFiles() {
+    if(!Fs.existsSync(directory)) {
+        Fs.mkdirSync(directory);
+    }
+
+    for(let locale of locales) {
+        let file = Path.join(directory, locale + '.yml');
+
+        if(!Fs.existsSync(file)) {
+            Fs.writeFileSync(file, "# " + locale);
         }
-
-        console.log(this.localesDatas);
-        
     }
+}
 
-    public static configure(options: i18nOptions) {
-        if(options.directory)
-            this.directory = options.directory;
+function loadLocales() {
+    for(let locale of locales) {
+        let file: string = Path.join(directory, locale + '.yml');
+        let datas: any;
 
-        if(options.locales)
-            this.locales = options.locales;
-
-        if(options.defaultLocale)
-            this.defaultLocale = options.defaultLocale;
-
-        this.checkFiles();
-        this.loadLocales();
-    }
-
-    private locale: string;
-
-    constructor(locale: string) {
-        this.locale = locale;
+        try {
+            datas = Yaml.safeLoad(Fs.readFileSync(file, 'utf8'));
+            localesDatas[locale] = flattenObject(datas);
+        } catch (err) {
+            Log.error(`Can't load locale file ${file}`, err);
+            process.exit(1);
+        }
     }
 }
