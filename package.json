@@ -7,7 +7,8 @@
     "prestart": "npm run build",
     "start": "node ./build/app.js",
     "dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
-    "build": "./node_modules/.bin/tsc"
+    "build": "./node_modules/.bin/tsc",
+    "eslint": "eslint . --ext ts; exit 0"
   },
   "dependencies": {
     "promise": "7.1.x",
@@ -34,8 +35,10 @@
     "@types/core-js": "^0.9.41",
     "@types/node": "7.0.x",
     "core-js": "^2.4.1",
+    "eslint": "^4.0.0",
     "nodemon": "1.11.x",
     "ts-node": "3.0.x",
-    "typescript": "2.3.x"
+    "typescript": "2.3.x",
+    "typescript-eslint-parser": "^3.0.0"
   }
 }

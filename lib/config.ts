@@ -18,16 +18,16 @@ interface Config {
 		port?: number
 	},
 	session?: {
-        secret?: string;
-    },
+		secret?: string;
+	},
 	mongoose?: {
-        connectionString?: string;
-    },
+		connectionString?: string;
+	},
 	language?: {
 		locales?: string[],
 		default?: string
 	},
-    environment?: string,
+	environment?: string,
 	imagesPath?: string,
 	imagesList?: string
 }
@@ -45,7 +45,7 @@ function configMerge(source: any, target: any) {
 }
 
 var config: Config = {
-    environment: environment
+	environment: environment
 };
 
 // Load config file

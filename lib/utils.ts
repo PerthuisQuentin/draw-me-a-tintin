@@ -1,90 +1,89 @@
 export function capitalize(word: string) : string {
-    return word.charAt(0).toUpperCase() + word.slice(1);
+	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 // Merge multiple strings in one without space and capitalize each words (camelCase)
 export function mergeInCamelCase(...words: string[]) : string {
-    
-    if(!words.length) 
-        return "";
-    if(words.length === 1) 
-        return words[0];
+	
+	if(!words.length) 
+		return '';
+	if(words.length === 1) 
+		return words[0];
 
-    var result: string = words[0];
+	var result: string = words[0];
 
-    for(var i = 1; i < words.length; i++) {
-        result += capitalize(words[i]);
-    }
+	for(var i = 1; i < words.length; i++) {
+		result += capitalize(words[i]);
+	}
 
-    return result;
+	return result;
 }
 
 // Return first element of accepted present in searchIn
 export function findFirstMatch<T>(searchIn: T[], accepted: T[]) : T {
 
-    var firstFound: T;
+	var firstFound: T;
 
-    accepted.some((element: T) : boolean => {
-        if(searchIn.includes(element)) {
-            firstFound = element;
-            return true;
-        }
+	accepted.some((element: T) : boolean => {
+		if(searchIn.includes(element)) {
+			firstFound = element;
+			return true;
+		}
 
-        return false;
-    });
-    
-    return firstFound;
+		return false;
+	});
+	
+	return firstFound;
 }
 
 // Transform a Joi Error in a string
 export function joiErrorStringify(err: any): any {
 
-    if(!err.isJoi)
-        return null;
+	if(!err.isJoi)
+		return null;
 
-    var result: any = {};
+	var result: any = {};
 
-    for(var detail of err.details) {
+	for(var detail of err.details) {
 
-        var name = detail.context.key;
-        var type = detail.type.split('.')[1];
-        var value;
+		var name = detail.context.key;
+		var type = detail.type.split('.')[1];
+		var value;
 
-        var error = mergeInCamelCase(name, type);
+		var error = mergeInCamelCase(name, type);
 
-        switch(type) { 
-            case "min":
-            case "max": { 
-                value = detail.context.limit;
-                break; 
-            }
-        } 
-        
-        if(value) {
-            result[error] = value;
-        } else {
-            result[error] = name
-        }
-    }
+		switch(type) { 
+			case 'min':
+			case 'max':
+				value = detail.context.limit;
+				break; 
+		} 
+		
+		if(value) {
+			result[error] = value;
+		} else {
+			result[error] = name;
+		}
+	}
 
-    return result;
+	return result;
 }
 
 // Flatten an object 
 export function flattenObject(datas: any) {
-    let newDatas: any = {};
+	let newDatas: any = {};
 
-    for(let key in datas) {
-        if(typeof datas[key] == 'object') {
-            let flattened: any = flattenObject(datas[key]);
+	for(let key in datas) {
+		if(typeof datas[key] == 'object') {
+			let flattened: any = flattenObject(datas[key]);
 
-            for(let subKey in flattened) {
-                newDatas[key + '.' + subKey] = flattened[subKey];
-            }
-        } else {
-            newDatas[key] = datas[key];
-        }
-    }
+			for(let subKey in flattened) {
+				newDatas[key + '.' + subKey] = flattened[subKey];
+			}
+		} else {
+			newDatas[key] = datas[key];
+		}
+	}
 
-    return newDatas;
+	return newDatas;
 }

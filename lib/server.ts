@@ -1,5 +1,5 @@
 const Express = require('express');
-const Morgan = require("morgan");
+const Morgan = require('morgan');
 const BodyParser = require('body-parser');
 const CookieParser = require('cookie-parser');
 const Session = require('express-session');
@@ -19,83 +19,83 @@ import * as I18n from './i18n';
 Mongoose.Promise = global.Promise;
 Mongoose.connect(config.mongoose.connectionString)
 	.then(() => {
-		Log.info("Connected to the db");
+		Log.info('Connected to the db');
 	})
 	.catch((err: any) => {
-		Log.error("Can't connect to the db", err);
+		Log.error('Can\'t connect to the db', err);
 	});
 
 export default class Server {
-    private server = Express();
-    private host: string;
-    private port: number;
+	private server = Express();
+	private host: string;
+	private port: number;
 
-    constructor() {
-        this.host = config.server.host;
-        this.port = config.server.port;
+	constructor() {
+		this.host = config.server.host;
+		this.port = config.server.port;
 
-        var sessionOptions = {
-            secret: config.session.secret,
-            resave: false,
-            saveUninitialized: false,
-            store: new MongoStore({ mongooseConnection: Mongoose.connection }),
-            cookie: { secure: false }
-        };
+		var sessionOptions = {
+			secret: config.session.secret,
+			resave: false,
+			saveUninitialized: false,
+			store: new MongoStore({ mongooseConnection: Mongoose.connection }),
+			cookie: { secure: false }
+		};
 
-        if(config.environment === 'production') {
-            this.server.set('trust proxy', 1)
-            sessionOptions.cookie.secure = true
-        }
+		if(config.environment === 'production') {
+			this.server.set('trust proxy', 1);
+			sessionOptions.cookie.secure = true;
+		}
 
-        if(config.environment === 'development') {
-            this.server.use(Morgan('dev'));
-        }
+		if(config.environment === 'development') {
+			this.server.use(Morgan('dev'));
+		}
 
-        // Public files
-        this.server.use('/static', Express.static('./public'));
-        this.server.use('/images', Express.static(config.imagesPath));
+		// Public files
+		this.server.use('/static', Express.static('./public'));
+		this.server.use('/images', Express.static(config.imagesPath));
 
-        // Parsers
-        this.server.use(CookieParser());
-        this.server.use(BodyParser.json());
-        this.server.use(BodyParser.urlencoded({ extended: true }));
+		// Parsers
+		this.server.use(CookieParser());
+		this.server.use(BodyParser.json());
+		this.server.use(BodyParser.urlencoded({ extended: true }));
 
-        // Handlebars views engine
-        this.server.engine('.hbs', ExpHbs({ 
-            extname: '.hbs',
-            defaultLayout: 'main',
-            helpers: hbsHelpers
-        }));
-        this.server.set('view engine', '.hbs');
+		// Handlebars views engine
+		this.server.engine('.hbs', ExpHbs({ 
+			extname: '.hbs',
+			defaultLayout: 'main',
+			helpers: hbsHelpers
+		}));
+		this.server.set('view engine', '.hbs');
 
-        // Sessions
-        this.server.use(Session(sessionOptions));
+		// Sessions
+		this.server.use(Session(sessionOptions));
 
-        // Passeport
-        setupStrategy(Passport);
-        this.server.use(Passport.initialize());
-        this.server.use(Passport.session());
+		// Passeport
+		setupStrategy(Passport);
+		this.server.use(Passport.initialize());
+		this.server.use(Passport.session());
 
-        // Flash
-        this.server.use(Flash());
+		// Flash
+		this.server.use(Flash());
 
-        // I18n
-        I18n.configure({
-            directory: './locales',
-            locales: config.language.locales,
-            defaultLocale: config.language.default
-        });
-        this.server.use(I18n.init);
+		// I18n
+		I18n.configure({
+			directory: './locales',
+			locales: config.language.locales,
+			defaultLocale: config.language.default
+		});
+		this.server.use(I18n.init);
 
-        // Routes
-        this.server.use('/', setupRouter(Passport));
-    }
+		// Routes
+		this.server.use('/', setupRouter(Passport));
+	}
 
-    public start(callback?: any) {
-        this.server.listen(this.port, this.host, () => {
-            Log.info(`Server listening on port ${this.port}.`);
+	public start(callback?: any) {
+		this.server.listen(this.port, this.host, () => {
+			Log.info('Server listening on port', this.port);
 
-            if(callback) callback();
-        });
-    }
+			if(callback) callback();
+		});
+	}
 }
