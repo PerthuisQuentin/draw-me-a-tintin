@@ -1,6 +1,7 @@
 const Express = require('express');
 const BodyParser = require('body-parser');
 const ExpHbs  = require('express-handlebars');
+const Favicon = require('serve-favicon');
 
 import Log from './logger';
 import config from './config';
@@ -14,6 +15,9 @@ export default class Server {
     constructor() {
         this.host = config.server.host;
         this.port = config.server.port;
+
+		// Favicon
+		this.server.use(Favicon('./public/favicon.ico'));
 
         // Public files
         this.server.use('/static', Express.static('./public'));

@@ -15,6 +15,7 @@
 		"express": "4.15.x",
 		"body-parser": "1.17.x",
 		"express-handlebars" : "3.0.x",
+		"serve-favicon" : "2.4.x",
 		"boom": "4.3.x",
 		"winston": "2.3.x",
 		"js-yaml": "3.8.x",

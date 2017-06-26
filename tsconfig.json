@@ -4,6 +4,9 @@
         "target": "es5", 
         "module": "commonjs", 
         "outDir": "./build",
+        "types": [
+            "node"
+        ],
         "typeRoots": ["node_modules/@types"]
     }, 
     "exclude" : [ 
