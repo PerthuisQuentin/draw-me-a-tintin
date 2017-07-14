@@ -1,9 +1,9 @@
-export function capitalize(word: string) : string {
+export function capitalize(word: string): string {
 	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 // Merge multiple strings in one without space and capitalize each words (camelCase)
-export function mergeInCamelCase(...words: string[]) : string {
+export function mergeInCamelCase(...words: string[]): string {
 	
 	if(!words.length) 
 		return '';
@@ -20,7 +20,7 @@ export function mergeInCamelCase(...words: string[]) : string {
 }
 
 // Return first element of accepted present in searchIn
-export function findFirstMatch<T>(searchIn: T[], accepted: T[]) : T {
+export function findFirstMatch<T>(searchIn: T[], accepted: T[]): T {
 
 	var firstFound: T;
 
@@ -70,7 +70,7 @@ export function joiErrorStringify(err: any): any {
 }
 
 // Flatten an object 
-export function flattenObject(datas: any) {
+export function flattenObject(datas: any): any {
 	let newDatas: any = {};
 
 	for(let key in datas) {
@@ -86,4 +86,22 @@ export function flattenObject(datas: any) {
 	}
 
 	return newDatas;
+}
+
+// Add or overwrite elements in source to target by recursion
+function mergeObject_r(source: any, target: any): any {
+	for(let key in source) {
+		if(source[key].constructor.name !== 'Object') {
+			target[key] = source[key];
+		} else {
+			if(!target[key]) target[key] = {};
+			mergeObject(source[key], target[key]);
+		}
+	}
+}
+
+// Add or overwrite elements in source to target
+export function mergeObject(source: any, target: any): any {
+	mergeObject_r(source, target);
+	return target;
 }

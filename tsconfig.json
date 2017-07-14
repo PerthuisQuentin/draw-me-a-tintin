@@ -4,10 +4,6 @@
         "target": "es6", 
         "module": "commonjs", 
         "outDir": "./build",
-        "types": [
-            "node",
-            "core-js"
-        ],
         "typeRoots": [
             "node_modules/@types"
         ],

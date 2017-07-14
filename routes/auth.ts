@@ -1,6 +1,7 @@
-const Express = require('express');
+import * as Express from 'express';
+import * as Passport from 'passport';
 
-function setupAuth(passport: any) {
+function setupAuth(passport: Passport.Passport) {
 	var router = Express.Router();
 
 	router.post('/signup', passport.authenticate('local-signup', {
@@ -15,7 +16,7 @@ function setupAuth(passport: any) {
 		failureFlash : true
 	}));
 
-	router.get('/logout', function(request: any, response: any) {
+	router.get('/logout', function(request: Express.Request, response: Express.Response) {
 		request.logout();
 		response.redirect('/');
 	});

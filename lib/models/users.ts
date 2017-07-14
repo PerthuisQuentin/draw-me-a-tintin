@@ -1,9 +1,23 @@
-const Mongoose = require('mongoose');
-const Bcrypt = require('bcrypt');
+import * as Mongoose from 'mongoose';
+import * as Bcrypt from 'bcrypt';
 
 import config from '../config';
 
-var userSchema = Mongoose.Schema({
+export interface IUser {
+	email?: string,
+	username?: string,
+	language?: string,
+	admin?: boolean
+}
+
+export interface IUserModel extends IUser, Mongoose.Document {
+    password?: String,
+	generateHash(password: string): string;
+	validPassword(password: string): boolean;
+	toPublicObject(): IUser;
+}
+
+var userSchema: Mongoose.Schema = new Mongoose.Schema({
 	email: String,
 	username: String,
 	password: String,
@@ -17,7 +31,7 @@ var userSchema = Mongoose.Schema({
 	}
 });
 
-userSchema.methods.toPublicObject = function() {
+userSchema.methods.toPublicObject = function(): IUser {
 	return {
 		email: this.email,
 		username: this.username,
@@ -27,13 +41,13 @@ userSchema.methods.toPublicObject = function() {
 };
 
 // Hash the password
-userSchema.methods.generateHash = function(password: string) {
-	return Bcrypt.hashSync(password, Bcrypt.genSaltSync(8), null);
+userSchema.methods.generateHash = function(password: string): string {
+	return Bcrypt.hashSync(password, Bcrypt.genSaltSync(8));
 };
 
 // Checking if password is valid
-userSchema.methods.validPassword = function(password: string) {
+userSchema.methods.validPassword = function(password: string): boolean {
 	return Bcrypt.compareSync(password, this.password);
 };
 
-export default Mongoose.model('Users', userSchema);
+export const Users: Mongoose.Model<IUserModel> = Mongoose.model<IUserModel>('User', userSchema);

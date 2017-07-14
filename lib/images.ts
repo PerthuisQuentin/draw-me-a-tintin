@@ -1,9 +1,9 @@
-const Fs = require('fs');
-const Moment = require('moment');
+import * as Fs from 'fs';
+import * as Moment from 'moment';
 
 import config from './config';
 
-var images = JSON.parse(Fs.readFileSync(config.imagesList));
+var images: any = JSON.parse(Fs.readFileSync(config.imagesList).toString());
 
 images = images.sort((imageA: any, imageB: any) => {
 	let dateA = Moment(imageA.date, 'DD/MM/YYYY');

@@ -1,6 +1,7 @@
+import * as Express from 'express';
 import config from './config';
 
-export function setupViewsLocals(request: any, response: any, next: any) {
+export function setupViewsLocals(request: Express.Request, response: Express.Response, next: Express.NextFunction) {
 	if(request.locals === undefined)
 		request.locals = {};
 

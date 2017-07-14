@@ -1,6 +1,7 @@
-const Fs = require('fs');
-const Path = require('path');
-const Yaml = require('js-yaml');
+import * as Fs from 'fs';
+import * as Path from 'path';
+import * as Yaml from 'js-yaml';
+import * as Express from 'express';
 
 import Log from './logger';
 import config from './config';
@@ -9,7 +10,7 @@ import {
 	flattenObject
 } from './utils';
 
-interface i18nOptions {
+interface Ii18nOptions {
 	directory?: string,
 	locales?: string[],
 	defaultLocale?: string
@@ -20,7 +21,7 @@ var locales: string[] = ['en'];
 var defaultLocale: string = 'en';
 var localesDatas: any = {};
 
-export function configure(options: i18nOptions) {
+export function configure(options: Ii18nOptions): void {
 	if(options.directory)
 		directory = options.directory;
 
@@ -34,17 +35,17 @@ export function configure(options: i18nOptions) {
 	loadLocales();
 }
 
-export function init(request: any, response: any, next: any) {
+export function init(request: Express.Request, response: Express.Response, next: Express.NextFunction): void {
 	guessLanguage(request);
 	
 	next();
 }
 
-export function get(locale: string, id: string) {
+export function get(locale: string, id: string): string {
 	return localesDatas[locale][id];
 }
 
-function guessLanguage(request: any) {
+function guessLanguage(request: Express.Request): void {
 
 	// Skip if language already defined
 	if(request.locale) return;
@@ -71,7 +72,7 @@ function guessLanguage(request: any) {
 	request.locale = config.language.default;
 }
 
-function checkFiles() {
+function checkFiles(): void {
 	if(!Fs.existsSync(directory)) {
 		Fs.mkdirSync(directory);
 	}
@@ -85,7 +86,7 @@ function checkFiles() {
 	}
 }
 
-function loadLocales() {
+function loadLocales(): void {
 	for(let locale of locales) {
 		let file: string = Path.join(directory, locale + '.yml');
 		let datas: any;

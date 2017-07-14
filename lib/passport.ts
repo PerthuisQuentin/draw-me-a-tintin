@@ -1,9 +1,12 @@
-const LocalStrategy = require('passport-local').Strategy;
-const Joi = require('joi');
-const Boom = require('boom');
+import * as Passport from 'passport';
+import * as PassportLocal from 'passport-local';
+import * as Joi from 'joi';
+import * as Boom from 'boom';
+import * as Promise from 'bluebird';
+import * as Express from 'express';
 
 import Log from './logger';
-import Users from './models/users';
+import { Users, IUserModel } from './models/users';
 import { joiErrorStringify } from './utils';
  
 const signupSchema = Joi.object().keys({
@@ -22,9 +25,15 @@ const signupSchema = Joi.object().keys({
 		.required()
 });
 
+interface ISignup {
+	email?: string,
+	username?: string,
+	password?: string
+}
+
 // Check if datas respect the signup restrictions, and the email and username availability
-function verifySignup(data: any): Promise<any> {
-	return new Promise((resolve: any,reject: any) => {
+function verifySignup(data: ISignup): Promise<ISignup> {
+	return new Promise((resolve, reject) => {
 		// Check form datas validity
 		Joi.validate(data, signupSchema, { abortEarly: false }, (err: any) => {
 			if(err)
@@ -33,49 +42,51 @@ function verifySignup(data: any): Promise<any> {
 			// Check email availability
 			Users.findOne({
 				'email' :  data.email 
-			}).then((user: any) => {
+			}).then((user: IUserModel) => {
 				if(user)
-					reject('mailAlreadyTaken');
+					return reject(Boom.wrap(new Error('mailAlreadyTaken'), 412, 'mailAlreadyTaken'));
 
 				// Check username availability
 				Users.findOne({ 
-					'username' :  data.username 
-				}).then((user: any) => {
+					'username' :  data.username
+				}).then((user: IUserModel) => {
 					if(user)
-						reject('usernameAlreadyTaken');
+						return reject(Boom.wrap(new Error('usernameAlreadyTaken'), 412, 'usernameAlreadyTaken'));
 
 					resolve(data);
-				}).catch((err: any) => {
+
+				}).catch((err) => {
 					Log.error('databaseError', err);
-					Boom.serverUnavailable('databaseError');
+					reject(Boom.wrap(err, 503, 'databaseError'));
+					
 				});
-			}).catch((err: any) => {
+			}).catch((err) => {
 				Log.error('databaseError', err);
-				Boom.serverUnavailable('databaseError');
+				reject(Boom.wrap(err, 503, 'databaseError'));
 			});
 		});
 	});
 }
 
-function setupLocalStrategy(passport: any) {
+function setupLocalStrategy(passport: Passport.Passport) {
 
-	passport.serializeUser((user: any, done: any) => {
+	passport.serializeUser((user: IUserModel, done) => {
 		done(null, user.id);
 	});
 
-	passport.deserializeUser((id: any, done: any) => {
-		Users.findById(id, (err: any, user: any) => {
+	passport.deserializeUser((id: string, done) => {
+		Users.findById(id, (err, user: IUserModel) => {
 			done(err, user);
 		});
 	});
 
 	// Passport Signup
-	passport.use('local-signup', new LocalStrategy({
+	passport.use('local-signup', new PassportLocal.Strategy({
 		usernameField : 'email',
 		passwordField : 'password',
 		passReqToCallback : true
-	}, (request: any, email: any, password: any, next: any) => {
-		verifySignup(request.body).then((data) => {
+	}, (request: Express.Request, email: string, password: string, next) => {
+		verifySignup(request.body).then((data: ISignup) => {
 			var newUser = new Users();
 
 			newUser.email = data.email;
@@ -83,26 +94,27 @@ function setupLocalStrategy(passport: any) {
 			newUser.password = newUser.generateHash(data.password);
 			newUser.language = request.session.language;
 
-			newUser.save((err: any) => {
-				if(err) next(Boom.serverUnavailable('databaseError'));
+			newUser.save((err) => {
+				if(err) 
+					return next(null, false, Boom.wrap(err, 503, 'databaseError'));
 
 				request.session.user = newUser.toPublicObject();
 
 				next(null, newUser);
 			});
-		}).catch((err: any) => {
+		}).catch((err) => {
 			next(null, false, request.flash('signupError', err));
 		});  
 	}));
 
 	// Passport Login
-	passport.use('local-login', new LocalStrategy({
+	passport.use('local-login', new PassportLocal.Strategy({
 		usernameField : 'email',
 		passwordField : 'password',
 		passReqToCallback : true
-	}, function(request: any, email: any, password: any, next: any) {
+	}, function(request: Express.Request, email: string, password: string, next) {
 
-		Users.findOne({ 'email' :  email }, function(err: any, user: any) {
+		Users.findOne({ 'email' :  email }, function(err, user: IUserModel) {
 			if(err) return next(err);
 
 			if(!user) 

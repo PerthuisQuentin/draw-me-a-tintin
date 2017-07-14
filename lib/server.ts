@@ -1,13 +1,14 @@
-const Express = require('express');
-const Morgan = require('morgan');
-const BodyParser = require('body-parser');
-const CookieParser = require('cookie-parser');
-const Session = require('express-session');
-const ExpHbs  = require('express-handlebars');
-const Mongoose = require('mongoose');
-const MongoStore = require('connect-mongo')(Session);
-const Passport = require('passport');
-const Flash = require('connect-flash');
+import * as Express from 'express';
+import * as Morgan from 'morgan';
+import * as BodyParser from 'body-parser';
+import * as CookieParser from 'cookie-parser';
+import * as Session from 'express-session';
+import * as ExpHbs from 'express-handlebars';
+import * as Mongoose from 'mongoose';
+import * as ConnectMongo from 'connect-mongo';
+import * as Passport from 'passport';
+import * as Bluebird from 'bluebird';
+var Flash = require('connect-flash');
 
 import Log from './logger';
 import config from './config';
@@ -16,17 +17,20 @@ import setupStrategy from './passport';
 import * as hbsHelpers from './helpers';
 import * as I18n from './i18n';
 
-Mongoose.Promise = global.Promise;
+var MongoStore = ConnectMongo(Session);
+
+(<any>Mongoose).Promise = Bluebird;
+
 Mongoose.connect(config.mongoose.connectionString)
 	.then(() => {
 		Log.info('Connected to the db');
 	})
-	.catch((err: any) => {
+	.catch((err) => {
 		Log.error('Can\'t connect to the db', err);
 	});
 
 export default class Server {
-	private server = Express();
+	private server: Express.Application = Express();
 	private host: string;
 	private port: number;
 
@@ -91,7 +95,7 @@ export default class Server {
 		this.server.use('/', setupRouter(Passport));
 	}
 
-	public start(callback?: any) {
+	public start(callback?: any): void {
 		this.server.listen(this.port, this.host, () => {
 			Log.info('Server listening on port', this.port);
 

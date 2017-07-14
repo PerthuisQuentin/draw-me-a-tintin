@@ -1,4 +1,4 @@
-const Winston = require('winston');
+import * as Winston from 'winston';
 
 var Logger = new Winston.Logger({
 	levels: {

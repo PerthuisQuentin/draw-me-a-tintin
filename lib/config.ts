@@ -1,7 +1,8 @@
-const Fs = require('fs');
-const Yaml = require('js-yaml');
+import * as Fs from 'fs';
+import * as Yaml from 'js-yaml';
 
 import Log from './logger';
+import { mergeObject } from './utils';
 
 var environment: string = process.env.NODE_ENV || 'default';
 var configFile = 'config.default.yml';
@@ -9,7 +10,7 @@ var configFile = 'config.default.yml';
 if(environment === 'production') configFile = 'config.prod.yml';
 if(environment === 'development') configFile = 'config.dev.yml';
 
-interface Config {
+interface IConfig {
 	website?: {
 		title?: string
 	},
@@ -32,24 +33,14 @@ interface Config {
 	imagesList?: string
 }
 
-// Add or overwrite config elements in source to target
-function configMerge(source: any, target: any) {
-	for(let key in source) {
-		if(source[key].constructor.name !== 'Object') {
-			target[key] = source[key];
-		} else {
-			if(!target[key]) target[key] = {};
-			configMerge(source[key], target[key]);
-		}
-	}
-}
 
-var config: Config = {
+
+var config: IConfig = {
 	environment: environment
 };
 
 // Load config file
-var loadedConfig: object = {};
+var loadedConfig: IConfig = {};
 
 try {
 	loadedConfig = Yaml.safeLoad(Fs.readFileSync(configFile, 'utf8'));
@@ -59,7 +50,5 @@ try {
 	process.exit(1);
 }
 
-// Merge loadedConfig in config
-configMerge(loadedConfig, config);
-
-export default config;
+// Merge loadedConfig in config and export it
+export default mergeObject(loadedConfig, config);
