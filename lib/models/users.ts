@@ -11,7 +11,7 @@ export interface IUser {
 }
 
 export interface IUserModel extends IUser, Mongoose.Document {
-    password?: String,
+	password?: String,
 	generateHash(password: string): string;
 	validPassword(password: string): boolean;
 	toPublicObject(): IUser;
