@@ -22,7 +22,7 @@ Log.verbose('Loaded : [VIEW][GET] /');
 // Login
 router.get('/login', function(request: Express.Request, response: Express.Response) {
 	request.locals.message = request.flash('loginMessage');
-
+	
 	response.render('login', request.locals);
 });
 

@@ -21,7 +21,9 @@ var MongoStore = ConnectMongo(Session);
 
 (<any>Mongoose).Promise = Bluebird;
 
-Mongoose.connect(config.mongoose.connectionString)
+Mongoose.connect(config.mongoose.connectionString, {
+	useMongoClient: true
+})
 	.then(() => {
 		Log.info('Connected to the db');
 	})

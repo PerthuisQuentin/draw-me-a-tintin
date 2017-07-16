@@ -7,10 +7,14 @@ import * as Bluebird from 'bluebird';
 // Use Bluebird promises for Mongoose
 declare module 'mongoose' {
 	type Promise<T> = Bluebird<T>;
+	interface ConnectionOptions {
+		useMongoClient: boolean
+	}
 }
 
-declare namespace Express {
-	export interface Request {
+// Add specific variables to requests
+declare module 'express' {
+	interface Request {
 		locale?: string,
 		locals?: any
 	}

@@ -2,7 +2,7 @@
   "name": "draw-me-a-tintin",
   "version": "1.0.0",
   "description": "A private joke website",
-  "main": "index.ts",
+  "main": "app.ts",
   "scripts": {
     "prestart": "npm run build",
     "start": "node ./build/app.js",
