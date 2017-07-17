@@ -8,3 +8,9 @@ nav:
 auth:
   login: "Connexion"
   signup: "Inscription"
+
+proposals:
+  make: "Proposer une image"
+
+admin:
+  wip: "Travaux en cours"

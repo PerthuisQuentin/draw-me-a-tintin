@@ -12,6 +12,7 @@ router.use(setupViewsLocals);
 
 // Index
 router.get('/', function(request: Express.Request, response: Express.Response) {
+	request.locals.styles = ['index.css'];
 	response.render('index', request.locals);
 });
 
@@ -22,7 +23,7 @@ Log.verbose('Loaded : [VIEW][GET] /');
 // Login
 router.get('/login', function(request: Express.Request, response: Express.Response) {
 	request.locals.message = request.flash('loginMessage');
-	
+
 	response.render('login', request.locals);
 });
 
@@ -45,6 +46,7 @@ Log.verbose('Loaded : [VIEW][GET] /signup');
 
 // Proposals
 router.get('/proposals', function(request: Express.Request, response: Express.Response) {
+	request.locals.styles = ['proposals.css'];
 	response.render('proposals', request.locals);
 });
 

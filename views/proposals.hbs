@@ -1,3 +1,5 @@
-<div class="jumbotron col-sm-6 col-sm-offset-3">
-    <h1><span class="fa fa-cogs"></span> Work in progress</h1>
-</div>
+{{#if isAuthenticated }}
+    <div id="proposal-button-wrapper">
+        <a href="#" class="btn btn-primary btn-lg">{{{I18n "proposals.make"}}}</a>
+    </div>
+{{/if}}

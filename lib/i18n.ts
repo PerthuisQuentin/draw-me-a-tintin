@@ -42,7 +42,12 @@ export function init(request: Express.Request, response: Express.Response, next:
 }
 
 export function get(locale: string, id: string): string {
-	return localesDatas[locale][id];
+	var text: string = localesDatas[locale][id];
+
+	if(!text) 
+		Log.error("[I18n] Can't find '" + id + "'");
+
+	return text;
 }
 
 function guessLanguage(request: Express.Request): void {
