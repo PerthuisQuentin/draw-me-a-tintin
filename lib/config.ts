@@ -11,6 +11,7 @@ if(environment === 'production') configFile = 'config.prod.yml';
 if(environment === 'development') configFile = 'config.dev.yml';
 
 interface IConfig {
+	environment?: string,
 	website?: {
 		title?: string
 	},
@@ -18,22 +19,20 @@ interface IConfig {
 		host?: string,
 		port?: number
 	},
-	session?: {
-		secret?: string;
-	},
 	mongoose?: {
 		connectionString?: string;
 	},
+	imagesPath?: string,
+	imagesList?: string,	
 	language?: {
 		locales?: string[],
 		default?: string
 	},
-	environment?: string,
-	imagesPath?: string,
-	imagesList?: string
+	security?: {
+		sessionSecret?: string;
+		passwordSaltFactor?: number;
+	}
 }
-
-
 
 var config: IConfig = {
 	environment: environment
@@ -50,5 +49,7 @@ try {
 	process.exit(1);
 }
 
-// Merge loadedConfig in config and export it
-export default mergeObject(loadedConfig, config);
+// Merge loadedConfig in config
+var mergedConfig: IConfig = mergeObject(loadedConfig, config);
+
+export default mergedConfig;

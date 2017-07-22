@@ -7,7 +7,7 @@ import * as ExpHbs from 'express-handlebars';
 import * as Mongoose from 'mongoose';
 import * as ConnectMongo from 'connect-mongo';
 import * as Passport from 'passport';
-import * as Bluebird from 'bluebird';
+import { Promise } from 'ts-promise';
 var Flash = require('connect-flash');
 
 import Log from './logger';
@@ -19,7 +19,7 @@ import * as I18n from './i18n';
 
 var MongoStore = ConnectMongo(Session);
 
-(<any>Mongoose).Promise = Bluebird;
+(<any>Mongoose).Promise = Promise;
 
 Mongoose.connect(config.mongoose.connectionString, {
 	useMongoClient: true
@@ -27,7 +27,7 @@ Mongoose.connect(config.mongoose.connectionString, {
 	.then(() => {
 		Log.info('Connected to the db');
 	})
-	.catch((err) => {
+	.catch((err: any) => {
 		Log.error('Can\'t connect to the db', err);
 	});
 
@@ -41,7 +41,7 @@ export default class Server {
 		this.port = config.server.port;
 
 		var sessionOptions = {
-			secret: config.session.secret,
+			secret: config.security.sessionSecret,
 			resave: false,
 			saveUninitialized: false,
 			store: new MongoStore({ mongooseConnection: Mongoose.connection }),

@@ -11,6 +11,9 @@ export function setupViewsLocals(request: Express.Request, response: Express.Res
 	// Passeport authentification
 	request.locals.isAuthenticated = request.isAuthenticated();
 
+	// User informations
+	request.locals.user = request.session.user;
+
 	// Locale
 	request.locals.locale = request.locale;
 

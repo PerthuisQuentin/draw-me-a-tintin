@@ -7,10 +7,17 @@ nav:
 
 auth:
   login: "Login"
+  logout: "Logout"
   signup: "Signup"
 
 proposals:
   make: "Propose an image"
 
+user:
+  myAccount: "My account"
+  myCreations: "My creations"
+  myProposals: "My proposals"
+
 admin:
   wip: "Work in progress"
+  error: "Error"

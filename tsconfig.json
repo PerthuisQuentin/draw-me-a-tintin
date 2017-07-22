@@ -1,6 +1,7 @@
 { 
     "compilerOptions": { 
         "noImplicitAny": true, 
+        "moduleResolution": "node",
         "target": "es6",
         "module": "commonjs", 
         "outDir": "./build",

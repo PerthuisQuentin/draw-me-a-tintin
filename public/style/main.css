@@ -7,7 +7,6 @@ body {
 .navbar-default .navbar-brand:hover, 
 .navbar-default .navbar-brand:focus
 {
-	/*color: #FDD000;*/
 	color: #67C8FF;
 }
 
@@ -29,4 +28,8 @@ body {
 
 .navbar-collapse {
 	font-size: 18px;
+}
+
+.dropdown .caret {
+	margin-bottom: 10px;
 }

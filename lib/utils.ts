@@ -1,3 +1,5 @@
+import * as Joi from 'joi';
+
 export function capitalize(word: string): string {
 	return word.charAt(0).toUpperCase() + word.slice(1);
 }
@@ -36,13 +38,30 @@ export function findFirstMatch<T>(searchIn: T[], accepted: T[]): T {
 	return firstFound;
 }
 
+export class DataError extends Error {
+    public data: any;
+	
+	constructor(message: string, data: any) {
+        super(message);
+
+		this.data = data;
+
+        // Set the prototype explicitly.
+        Object.setPrototypeOf(this, DataError.prototype);
+    }
+}
+
+export interface IJoiErrorStringified {
+	[error: string]: any;
+}
+
 // Transform a Joi Error in a string
-export function joiErrorStringify(err: any): any {
+export function joiErrorStringify(err: Joi.ValidationError): IJoiErrorStringified {
 
 	if(!err.isJoi)
 		return null;
 
-	var result: any = {};
+	var result: IJoiErrorStringified = {};
 
 	for(var detail of err.details) {
 

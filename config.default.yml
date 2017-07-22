@@ -9,19 +9,20 @@ server:
   host: 'localhost'
   port: 8001
 
-# Images informations
-imagesPath: './images'
-imagesList: './images/images.json'
-
-# Sessions
-session:
-  secret: 'foobar'
-
 # Mongoose
 mongoose:
   connectionString: 'mongodb://localhost/dawme'
+
+# Images informations
+imagesPath: './images'
+imagesList: './images/images.json'
 
 # Language
 language: 
   locales: ["en"]
   default: "en"
+
+# Security
+security:
+  sessionSecret: 'foobar'
+  passwordSaltFactor: 10

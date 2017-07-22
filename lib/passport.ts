@@ -2,8 +2,8 @@ import * as Passport from 'passport';
 import * as PassportLocal from 'passport-local';
 import * as Joi from 'joi';
 import * as Boom from 'boom';
-import * as Promise from 'bluebird';
 import * as Express from 'express';
+import { Promise } from 'ts-promise';
 
 import Log from './logger';
 import { Users, IUserModel } from './models/users';
@@ -32,41 +32,55 @@ interface ISignup {
 }
 
 // Check if datas respect the signup restrictions, and the email and username availability
-function verifySignup(data: ISignup): Promise<ISignup> {
-	return new Promise((resolve, reject) => {
+function verifySignupDatas(data: ISignup): Promise<ISignup> {
+	return new Promise<ISignup>((resolve, reject) => {
 		// Check form datas validity
 		Joi.validate(data, signupSchema, { abortEarly: false }, (err: any) => {
-			if(err)
-				return reject(joiErrorStringify(err));
+			if(err) return reject(Boom.wrap(new Error('badRequest'), 400/*, joiErrorStringify(err)*/));
 			
-			// Check email availability
-			Users.findOne({
-				'email' :  data.email 
-			}).then((user: IUserModel) => {
-				if(user)
-					return reject(Boom.wrap(new Error('mailAlreadyTaken'), 412, 'mailAlreadyTaken'));
 
-				// Check username availability
-				Users.findOne({ 
-					'username' :  data.username
-				}).then((user: IUserModel) => {
-					if(user)
-						return reject(Boom.wrap(new Error('usernameAlreadyTaken'), 412, 'usernameAlreadyTaken'));
-
-					resolve(data);
-
-				}).catch((err) => {
-					Log.error('databaseError', err);
-					reject(Boom.wrap(err, 503, 'databaseError'));
-					
-				});
-			}).catch((err) => {
-				Log.error('databaseError', err);
-				reject(Boom.wrap(err, 503, 'databaseError'));
-			});
 		});
 	});
 }
+
+interface HttpError extends Error {
+	data: any;
+}
+
+function verifyDatasAvailability(data: ISignup) : Promise<ISignup> {
+	return new Promise<ISignup>((resolve, reject) => {
+		// Check email availability
+		Users.findOne({
+			'email' :  data.email 
+		}).then((user) => {
+			if(user)
+				return reject(Boom.wrap(new Error('mailAlreadyTaken'), 412, 'mailAlreadyTaken'));
+
+			var t: HttpError;
+
+			reject(t);
+
+			// Check username availability
+			Users.findOne({ 
+				'username' :  data.username
+			}).then((user) => {
+				if(user)
+					return reject(Boom.wrap(new Error('usernameAlreadyTaken'), 412, 'usernameAlreadyTaken'));
+
+				resolve(data);
+
+			}).catch((err) => {
+				Log.error('databaseError', err);
+				reject(Boom.wrap(err, 503, 'databaseError'));
+					
+			});
+		}).catch((err: any) => {
+			Log.error('databaseError', err);
+			reject(Boom.wrap(err, 503, 'databaseError'));
+		});
+	});
+}
+
 
 function setupLocalStrategy(passport: Passport.Passport) {
 
@@ -86,13 +100,13 @@ function setupLocalStrategy(passport: Passport.Passport) {
 		passwordField : 'password',
 		passReqToCallback : true
 	}, (request: Express.Request, email: string, password: string, next) => {
-		verifySignup(request.body).then((data: ISignup) => {
+		/*verifySignup(request.body).then((data: ISignup) => {
 			var newUser = new Users();
 
 			newUser.email = data.email;
 			newUser.username = data.username;
-			newUser.password = newUser.generateHash(data.password);
-			newUser.language = request.session.language;
+			newUser.password = data.password;
+			newUser.language = request.locale;
 
 			newUser.save((err) => {
 				if(err) 
@@ -103,8 +117,10 @@ function setupLocalStrategy(passport: Passport.Passport) {
 				next(null, newUser);
 			});
 		}).catch((err) => {
-			next(null, false, request.flash('signupError', err));
-		});  
+			next(null, false, request.flash('signupError', err.message));
+		});  */
+
+		return next(null, false, Boom.wrap(new Error("wala"), 503, 'databaseError'));
 	}));
 
 	// Passport Login
@@ -120,12 +136,19 @@ function setupLocalStrategy(passport: Passport.Passport) {
 			if(!user) 
 				return next(null, false, request.flash('loginMessage', 'No user found.'));
 
-			if(!user.validPassword(password))
-				return next(null, false, request.flash('loginMessage', 'Wrong password.'));
+			user.verifyPassword(password)
+			.then((isValid) => {
+				if(!isValid) {
+					return next(null, false, request.flash('loginMessage', 'Wrong password.'));
+				}
 
-			request.session.user = user.toPublicObject();
+				request.session.user = user.toPublicObject();
 
-			return next(null, user);
+				next(null, user);
+			})
+			.catch((err) => {
+				next(err);
+			});	
 		});
 	}));
 }

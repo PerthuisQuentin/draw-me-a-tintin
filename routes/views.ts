@@ -13,6 +13,7 @@ router.use(setupViewsLocals);
 // Index
 router.get('/', function(request: Express.Request, response: Express.Response) {
 	request.locals.styles = ['index.css'];
+	
 	response.render('index', request.locals);
 });
 

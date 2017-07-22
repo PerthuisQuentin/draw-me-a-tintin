@@ -2,11 +2,11 @@
 // Project: https://github.com/PerthuisQuentin/Draw-me-a-Tintin
 // Definitions by: Quentin Perthuis <https://github.com/PerthuisQuentin/>
 
-import * as Bluebird from 'bluebird';
+import { Promise as TSPromise } from 'ts-promise';
 
 // Use Bluebird promises for Mongoose
 declare module 'mongoose' {
-	type Promise<T> = Bluebird<T>;
+	type Promise<T> = TSPromise<T>;
 	interface ConnectionOptions {
 		useMongoClient: boolean
 	}
