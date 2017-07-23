@@ -41,11 +41,28 @@ export function init(request: Express.Request, response: Express.Response, next:
 	next();
 }
 
-export function get(locale: string, id: string): string {
+export function get(locale: string, id: string, data?: any): string {
 	var text: string = localesDatas[locale][id];
 
-	if(!text) 
+	if(!text)
 		Log.error("[I18n] Can't find '" + id + "'");
+
+	if(data) {
+		if(data instanceof Array) {
+			var i: number = 0;
+
+			while(text.includes('%s')) {
+				if(data.length == i) break;
+
+				text = text.replace(/%s/, data[i]);
+				i++;
+			}
+		} 
+		else if(typeof data != 'object') {
+			console.log('Héhé');
+			text = text.replace(/%s/g, data);
+		}
+	}
 
 	return text;
 }

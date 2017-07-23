@@ -20,3 +20,4 @@ user:
 
 admin:
   wip: "Travaux en cours"
+  httpError: "Erreur %s"
