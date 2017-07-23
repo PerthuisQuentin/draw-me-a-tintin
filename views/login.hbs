@@ -1,8 +1,8 @@
 <div class="jumbotron col-sm-6 col-sm-offset-3">
     <h1><span class="fa fa-sign-in"></span> Connexion</h1>
     
-    {{#if message }}
-        <div class="alert alert-danger">{{ message }}</div>
+    {{#if message}}
+        <div class="alert alert-danger">{{I18n message}}</div>
     {{/if}}
 
     <form action="/login" method="post">

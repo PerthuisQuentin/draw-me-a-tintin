@@ -1,7 +1,14 @@
-import * as Express from 'express';
+import { 
+	Request,
+	Response,
+	NextFunction,
+	Errback
+} from 'express';
+
+import { HttpError } from './utils';
 import config from './config';
 
-export function setupViewsLocals(request: Express.Request, response: Express.Response, next: Express.NextFunction) {
+export function setupViewsLocals(request: Request, response: Response, next: NextFunction) {
 	if(request.locals === undefined)
 		request.locals = {};
 

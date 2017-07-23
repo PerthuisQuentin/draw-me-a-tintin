@@ -93,6 +93,11 @@ export default class Server {
 		});
 		this.server.use(I18n.init);
 
+		this.server.use(function(a, b, c) {
+			console.log(a.xhr);
+			c();
+		})
+
 		// Routes
 		this.server.use('/', setupRouter(Passport));
 	}

@@ -20,4 +20,8 @@ user:
 
 admin:
   wip: "Work in progress"
+
+error:
   httpError: "Error %s"
+  wrongPassword: "The password is incorrect."
+  noUserFound: "There is no user for this email."

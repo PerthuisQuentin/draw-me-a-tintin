@@ -2,9 +2,7 @@ import * as Express from 'express';
 
 import Log from '../lib/logger';
 import images from '../lib/images';
-import { 
-	setupViewsLocals
-} from '../lib/middleware';
+import { setupViewsLocals } from '../lib/middleware';
 
 var router = Express.Router();
 
@@ -23,7 +21,7 @@ Log.verbose('Loaded : [VIEW][GET] /');
 
 // Login
 router.get('/login', function(request: Express.Request, response: Express.Response) {
-	request.locals.message = request.flash('loginMessage');
+	request.locals.message = request.flash('login');
 
 	response.render('login', request.locals);
 });
@@ -36,7 +34,7 @@ Log.verbose('Loaded : [VIEW][GET] /login');
 router.get('/signup', function(request: Express.Request, response: Express.Response) {
 	request.locals.styles = ['signup.css'];
 	request.locals.scripts = ['signup.js'];
-	request.locals.message = request.flash('signupError');
+	request.locals.message = request.flash('signup');
 
 	response.render('signup', request.locals);
 });

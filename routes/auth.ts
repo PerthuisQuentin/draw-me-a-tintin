@@ -3,9 +3,13 @@ import * as Passport from 'passport';
 import * as Boom from 'boom';
 
 import { IUser } from '../lib/models/users';
+import { setupViewsLocals } from '../lib/middleware';
+import { HttpError } from '../lib/utils';
 
 function setupAuth(passport: Passport.Passport) {
 	var router = Express.Router();
+
+	router.use(setupViewsLocals);
 
 	router.post('/signup', passport.authenticate('local-signup', {
 		successRedirect : '/',
@@ -14,17 +18,24 @@ function setupAuth(passport: Passport.Passport) {
 	}));
 
 	router.post('/login', function(request: Express.Request, response: Express.Response, next: Express.NextFunction) {
-		passport.authenticate('local-login', function(err: Error, user: IUser, info: any) {
-			if(err) return response.send(Boom.wrap(new Error('usernameAlreadyTaken'), 412, 'usernameAlreadyTaken'));
+		passport.authenticate('local-login', function(error: HttpError, user: IUser, info: any) {
+			if(error) {
+				request.locals.error = error;
+				return response.render('error', request.locals);
+			}
 
-			if(!user) return response.send(Boom.wrap(new Error('usernameAlreadyTaken'), 412, 'usernameAlreadyTaken'));
+			if(!user) {
+				request.flash('login', info);
+				return response.redirect('/login');
+			}
 
-			request.login(user, loginErr => {
-				if (loginErr) {
-					return next(loginErr);
+			request.login(user, (loginError) => {
+				if (loginError) {
+					request.locals.error = HttpError.internalError()
+					return response.render('error', request.locals);
 				}
 			
-				return response.send(Boom.wrap(new Error('usernameAlreadyTaken'), 412, 'usernameAlreadyTaken'));
+				response.redirect('/');
 			});      
 		})(request, response, next);
 	});

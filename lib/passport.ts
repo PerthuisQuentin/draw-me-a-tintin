@@ -7,7 +7,7 @@ import { Promise } from 'ts-promise';
 
 import Log from './logger';
 import { Users, IUserModel } from './models/users';
-import { joiErrorStringify } from './utils';
+import { joiErrorStringify, HttpError } from './utils';
  
 const signupSchema = Joi.object().keys({
 	email: Joi
@@ -43,10 +43,6 @@ function verifySignupDatas(data: ISignup): Promise<ISignup> {
 	});
 }
 
-interface HttpError extends Error {
-	data: any;
-}
-
 function verifyDatasAvailability(data: ISignup) : Promise<ISignup> {
 	return new Promise<ISignup>((resolve, reject) => {
 		// Check email availability
@@ -55,10 +51,6 @@ function verifyDatasAvailability(data: ISignup) : Promise<ISignup> {
 		}).then((user) => {
 			if(user)
 				return reject(Boom.wrap(new Error('mailAlreadyTaken'), 412, 'mailAlreadyTaken'));
-
-			var t: HttpError;
-
-			reject(t);
 
 			// Check username availability
 			Users.findOne({ 
@@ -128,27 +120,30 @@ function setupLocalStrategy(passport: Passport.Passport) {
 		usernameField : 'email',
 		passwordField : 'password',
 		passReqToCallback : true
-	}, function(request: Express.Request, email: string, password: string, next) {
+	}, function(request: Express.Request, email: string, password: string, next: any) {
 
-		Users.findOne({ 'email' :  email }, function(err, user: IUserModel) {
-			if(err) return next(err);
-
-			if(!user) 
-				return next(null, false, request.flash('loginMessage', 'No user found.'));
+		Users.findOne({
+			'email' :  email
+		})
+		.then((user: IUserModel) => {
+			if(!user)
+				return next(null, false, 'error.noUserFound');
 
 			user.verifyPassword(password)
-			.then((isValid) => {
-				if(!isValid) {
-					return next(null, false, request.flash('loginMessage', 'Wrong password.'));
-				}
+			.then((isValid: boolean) => {
+				if(!isValid)
+					return next(null, false, 'error.wrongPassword');
 
 				request.session.user = user.toPublicObject();
 
 				next(null, user);
 			})
 			.catch((err) => {
-				next(err);
+				next(HttpError.internalError());
 			});	
+		})
+		.catch((error: Error) => {
+			next(HttpError.databaseError());
 		});
 	}));
 }

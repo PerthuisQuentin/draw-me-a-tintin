@@ -38,17 +38,26 @@ export function findFirstMatch<T>(searchIn: T[], accepted: T[]): T {
 	return firstFound;
 }
 
-export class DataError extends Error {
-    public data: any;
+export class HttpError extends Error {
+    public statusCode: number;
 	
-	constructor(message: string, data: any) {
+	constructor(statusCode: number, message: string) {
         super(message);
 
-		this.data = data;
+		this.statusCode = statusCode;
 
         // Set the prototype explicitly.
-        Object.setPrototypeOf(this, DataError.prototype);
+        Object.setPrototypeOf(this, HttpError.prototype);
     }
+
+	public static internalError(): HttpError {
+		return new HttpError(500, 'internalError');
+    }
+
+	public static databaseError(): HttpError {
+		return new HttpError(503, 'databaseError');
+    }
+
 }
 
 export interface IJoiErrorStringified {
