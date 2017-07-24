@@ -13,6 +13,13 @@ server:
 mongoose:
   connectionString: 'mongodb://localhost/dawme'
 
+# Mailer
+mailer:
+  from: 'Draw Me A Tintin <drawme@leekwarswiki.net>'
+  service: 'Mailgun'
+  user: 'MAILGUN_USER'
+  pass: 'MAILGUN_PASS'
+
 # Images informations
 imagesPath: './images'
 imagesList: './images/images.json'

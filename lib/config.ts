@@ -22,6 +22,12 @@ interface IConfig {
 	mongoose?: {
 		connectionString?: string;
 	},
+	mailer?: {
+		from?: string,
+		service?: string,
+		user?: string,
+		pass?: string
+	},
 	imagesPath?: string,
 	imagesList?: string,	
 	language?: {
