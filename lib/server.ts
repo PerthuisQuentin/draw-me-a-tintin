@@ -10,8 +10,8 @@ import * as Passport from 'passport';
 import { Promise } from 'ts-promise';
 var Flash = require('connect-flash');
 
-import Log from './logger';
 import config from './config';
+import Log from './logger';
 import setupRouter from './router';
 import setupStrategy from './passport';
 import * as hbsHelpers from './helpers';

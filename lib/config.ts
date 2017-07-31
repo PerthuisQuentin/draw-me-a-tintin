@@ -2,7 +2,7 @@ import * as Fs from 'fs';
 import * as Yaml from 'js-yaml';
 
 import Log from './logger';
-import { mergeObject } from './utils';
+import { mergeObject, setWebsiteUrl } from './utils';
 
 var environment: string = process.env.NODE_ENV || 'default';
 var configFile = 'config.default.yml';
@@ -13,7 +13,8 @@ if(environment === 'development') configFile = 'config.dev.yml';
 interface IConfig {
 	environment?: string,
 	website?: {
-		title?: string
+		title?: string,
+		url?: string
 	},
 	server?: {
 		host?: string,
@@ -57,5 +58,8 @@ try {
 
 // Merge loadedConfig in config
 var mergedConfig: IConfig = mergeObject(loadedConfig, config);
+
+// Setup Website url in utils
+setWebsiteUrl(mergedConfig.website.url);
 
 export default mergedConfig;

@@ -2,33 +2,26 @@ import * as Fs from 'fs';
 import * as Path from 'path';
 import * as Nodemailer from 'nodemailer';
 import * as Handlebars from 'handlebars';
+import { Promise } from 'ts-promise';
 
 import config from './config';
 import Log from './logger';
-import { Promise } from 'ts-promise';
+import * as I18n from './i18n';
 
 const templatesPath: string = "views/mails";
 const sender: string = config.mailer.from;
 
-
-interface ITemplates {
-    [template: string]: string;
-}
-
-export var templates: ITemplates = {
-    SIGNUP: "signup"
+const Templates: any = {
+    Activation: {
+        name: "activation",
+        subject: "account-validation"
+    }
 };
 
-var templatesHbs: any = {};
-
-
-interface IContext {}
-
-export interface ISignupContext extends IContext {
+export interface IActivationContext {
     name: string,
     url: string
-} 
-
+}
 
 if(!process.env[config.mailer.user]) {
     Log.error('Can\'t find user environnement variable for mailer');
@@ -47,17 +40,17 @@ var transporter: Nodemailer.Transporter = Nodemailer.createTransport({
     }
 });
 
-for(let name in templates) {
-    Fs.readFile(Path.join(templatesPath, templates[name] + '.hbs'), 'utf8', (err, data) => {
+for(let i in Templates) {
+    Fs.readFile(Path.join(templatesPath, Templates[i].name + '.hbs'), 'utf8', (err, data) => {
         if(err) 
             return Log.error('Error while loading email teamplate : ' + err);
 
-        templatesHbs[templates[name]] = Handlebars.compile(data);
+        Templates[i].html = Handlebars.compile(data);
     });
 }
 
-export function send(receiver: string, subject: string, html: string) {
-    return new Promise((resolve, reject) => {
+export function send(receiver: string, subject: string, html: string): Promise<Nodemailer.SentMessageInfo> {
+    return new Promise<Nodemailer.SentMessageInfo>((resolve, reject) => {
         transporter.sendMail({
             from: sender,
             to: receiver,
@@ -74,16 +67,14 @@ export function send(receiver: string, subject: string, html: string) {
     });
 }
 
-// Send a email using a loaded template
-export function sendTemplate(receiver: string, subject: string, template: string, context: any) {
-    return new Promise((resolve, reject) => {
-        
-        if(!templatesHbs[template]) return reject(new Error('Unknown template : ' + template));
+function sendTemplate(receiver: string, language: string, template: any, context: any): Promise<Nodemailer.SentMessageInfo> {
+    return send(
+            receiver, 
+            I18n.get(language, template.subject), 
+            template.html(context)
+    );
+}
 
-        let html = templatesHbs[template](context);
-
-        send(receiver, subject, html)
-        .then(resolve)
-        .catch(reject);
-    });
-};
+export function sendActivationMail(receiver: string, language: string, context: IActivationContext): Promise<Nodemailer.SentMessageInfo> {
+    return sendTemplate(receiver, language, Templates.Activation, context);
+}

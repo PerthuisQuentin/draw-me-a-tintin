@@ -3,6 +3,7 @@
 # Website informations
 website:
   title: "Draw Me Something"
+  url: "http://localhost:8001"
 
 # Server informations
 server:

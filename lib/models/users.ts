@@ -1,8 +1,16 @@
 import * as Mongoose from 'mongoose';
 import * as Bcrypt from 'bcrypt';
+import * as Moment from 'moment';
 import { Promise } from 'ts-promise';
 
 import config from '../config';
+import { generateToken, websitePathJoin } from '../utils';
+import { sendActivationMail, IActivationContext } from '../mailer';
+ 
+export enum UserStatut {
+    New = "new",
+    Active = "active"
+}
 
 export interface IUser {
 	email?: string,
@@ -11,16 +19,29 @@ export interface IUser {
 	admin?: boolean
 }
 
-export interface IUserModel extends IUser, Mongoose.Document {
-	password?: String,
-	verifyPassword(password: string): Promise<boolean>;
-	toPublicObject(): IUser;
+export interface IUserSession extends IUser {
+	statut: UserStatut
 }
+
+export interface IUserModel extends IUser, Mongoose.Document {
+	password?: string,
+	statut: UserStatut,
+	activationToken: string,
+	activationExpiration: Date,
+	verifyPassword(password: string): Promise<boolean>,
+	toPublicObject(): IUser,
+	toSession(): IUserSession
+}
+
 
 var userSchema: Mongoose.Schema = new Mongoose.Schema({
 	email: String,
 	username: String,
 	password: String,
+	statut: {
+		type: String, 
+		default: UserStatut.New 
+	},
 	language: { 
 		type: String, 
 		default: config.language.default 
@@ -28,8 +49,12 @@ var userSchema: Mongoose.Schema = new Mongoose.Schema({
 	admin: { 
 		type: Boolean, 
 		default: false 
-	}
+	},
+	activationToken: String,
+	activationExpiration: Date
 });
+
+
 
 // Automatically hash the password if modified
 userSchema.pre('save', function(next) {
@@ -57,6 +82,16 @@ userSchema.methods.toPublicObject = function(): IUser {
 	};
 };
 
+userSchema.methods.toSession = function(): IUserSession {
+	return {
+		email: this.email,
+		username: this.username,
+		language: this.language,
+		statut: this.statut,
+		admin: this.admin
+	};
+};
+
 // Check if password is valid
 userSchema.methods.verifyPassword = function(password: string): Promise<boolean> {
 	return new Promise<boolean>((resolve, reject) => {
@@ -65,6 +100,32 @@ userSchema.methods.verifyPassword = function(password: string): Promise<boolean>
 
 			resolve(isValid);
 		});
+	});
+};
+
+userSchema.methods.initActivationProcess = function(): Promise<void> {
+	return new Promise<void>((resolve, reject) => {
+		this.activationToken = generateToken();
+		this.activationExpiration = Moment(Moment.now()).add(10, 'minutes').toDate();
+
+		this.save()
+		.then(() => {
+			let mailContext: IActivationContext = {
+				name: this.username,
+				url: websitePathJoin('activate', this.activationToken)
+			};
+
+			sendActivationMail(
+				this.email,
+				this.language,
+				mailContext
+			)
+			.then(() => {
+				resolve(undefined);
+			})
+			.catch(reject);
+		})
+		.catch(reject);
 	});
 };
 

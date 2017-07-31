@@ -134,7 +134,7 @@ function setupLocalStrategy(passport: Passport.Passport) {
 				if(!isValid)
 					return next(null, false, 'error.wrongPassword');
 
-				request.session.user = user.toPublicObject();
+				request.session.user = user.toSession();
 
 				next(null, user);
 			})

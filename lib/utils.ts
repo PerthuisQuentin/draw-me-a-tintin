@@ -1,3 +1,4 @@
+import * as Crypto from 'crypto';
 import * as Joi from 'joi';
 
 export function capitalize(word: string): string {
@@ -132,4 +133,29 @@ function mergeObject_r(source: any, target: any): any {
 export function mergeObject(source: any, target: any): any {
 	mergeObject_r(source, target);
 	return target;
+}
+
+
+export function generateToken(): string {
+	return Crypto.randomBytes(64).toString('hex');
+}
+
+// Can't take it directly from config because config need utils
+var webSiteRoot: string;
+
+export function setWebsiteUrl(url: string) {
+	webSiteRoot = url;
+
+	if(!webSiteRoot.endsWith('/'))
+		webSiteRoot += '/';
+}
+
+export function websitePathJoin(...path: string[]): string {
+	let websitePath = webSiteRoot;
+	
+	for(var i = 0; i < path.length - 1; i++) {
+		websitePath += path[i] + '/';
+	}
+
+	return websitePath + path[path.length - 1];
 }
