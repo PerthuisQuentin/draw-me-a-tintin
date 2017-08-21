@@ -1,55 +1,72 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-	var modal = document.getElementById("images-modal");
-	var modalImg = document.getElementById("modal-image");
 	var searchInput = document.getElementById("author-search");
+	var imagePreview = $('.imagepreview');
 
-	var images = document.getElementsByClassName("image-container");
 	var imageHeader = document.getElementsByClassName("image-container-header")[0];
-	var modalCloseButton = document.getElementsByClassName("close")[0];
-	var modalContent = document.getElementsByClassName("modal-content")[0];
+	var images = document.getElementsByClassName("image-container");
+	var resources = document.getElementsByClassName("resource-container");
 
-	function closeModal() {
-		modal.style.display = "none";
-	}
+	var imagesContainer = document.getElementById("images");
+	var resourcesContainer = document.getElementById("resources");
+	var imagesButton = document.getElementById("images-button");
+	var resourcesButton = document.getElementById("resources-button");
 
-	modalCloseButton.addEventListener("click", closeModal);
+	var currentDisplay = "images";
 
-	modalContent.addEventListener("click", function(e) {
-		if(e.target == this) closeModal();
+	// Modal
+	
+	$('.modalable').on('click', function() {
+		$('.imagepreview').attr('src', $(this).find('.image').attr('src'));
+		$('#modal-info #name').text($(this).find('#name').text());
+		$('#modal-info #author').text($(this).find('#author').text());
+		$('#modal-info #date').text($(this).find('#date').text());
+		$('#imagemodal').modal('show');   
 	});
 
-
-
-	function openModal() {
-		modal.style.display = "block";
-	 	modalImg.src = this.getElementsByClassName("image")[0].src
-	}
-
-	for(var i = 0; i < images.length; i++) {
-		images[i].addEventListener("click", openModal, true);
-	}
-
-	imageHeader.addEventListener("click", openModal, true);
-
-
+	// Filter
 
 	function filterPicture(search) {
 		var search = searchInput.value.toLowerCase();
+		var items;
+		if(currentDisplay == "images") {
+			items = images;
+		} else if(currentDisplay == "resources") {
+			items = resources;
+		}
+
 		if(search == "") {
-			for(var i = 0; i < images.length; i++) {
-				images[i].style.display = "block";
+			for(var i = 0; i < items.length; i++) {
+				items[i].style.display = "block";
 			}
 		} else {
-			for(var i = 0; i < images.length; i++) {
-				if(images[i].getAttribute("author").toLowerCase().indexOf(search) !== -1) {
-					images[i].style.display = "block";
+			for(var i = 0; i < items.length; i++) {
+				if(items[i].getAttribute("author").toLowerCase().indexOf(search) !== -1) {
+					items[i].style.display = "block";
 				} else {
-					images[i].style.display = "none";
+					items[i].style.display = "none";
 				}
 			}
 		}
 	}
 
 	searchInput.addEventListener("input", filterPicture); 
+
+	// Switch
+
+	imagesButton.addEventListener("click", function(e) {
+		imagesButton.className = "active";
+		resourcesButton.className = "";
+		imagesContainer.style.display = "flex";
+		resourcesContainer.style.display = "none";
+		currentDisplay = "images";
+	});
+
+	resourcesButton.addEventListener("click", function(e) {
+		imagesButton.className = "";
+		resourcesButton.className = "active";
+		imagesContainer.style.display = "none";
+		resourcesContainer.style.display = "flex";
+		currentDisplay = "resources";
+	});
 });

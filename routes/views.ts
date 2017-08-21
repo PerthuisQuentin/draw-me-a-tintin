@@ -2,6 +2,7 @@ const Express = require('express');
 
 import Log from '../lib/logger';
 import images from '../lib/images';
+import resources from '../lib/resources';
 
 interface View {
     path: string,
@@ -14,7 +15,8 @@ var views: View[] = [
         path: '/', 
         render: 'index',
         locals: {
-            images: images
+            images: images,
+            resources: resources
         }
     }
 ];

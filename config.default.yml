@@ -8,3 +8,5 @@ server:
 # Images informations
 imagesPath: './images'
 imagesList: './images/images.json'
+resourcesPath: './ressources'
+resourcesList: './ressources/images.json'

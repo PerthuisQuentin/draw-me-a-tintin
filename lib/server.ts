@@ -22,6 +22,7 @@ export default class Server {
         // Public files
         this.server.use('/static', Express.static('./public'));
         this.server.use('/images', Express.static(config.imagesPath));
+        this.server.use('/resources', Express.static(config.resourcesPath));
 
         // Parsers
         this.server.use(BodyParser.json({ type: 'application/*+json' }));

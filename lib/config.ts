@@ -14,7 +14,9 @@ interface Config {
 	},
     environment?: string,
 	imagesPath?: string,
-	imagesList?: string
+	imagesList?: string,
+	resourcesPath?: string,
+	resourcesList?: string
 }
 
 // Add or overwrite config elements in source to target
