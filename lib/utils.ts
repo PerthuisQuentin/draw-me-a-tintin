@@ -40,25 +40,46 @@ export function findFirstMatch<T>(searchIn: T[], accepted: T[]): T {
 }
 
 export class HttpError extends Error {
+	public isHttpError = true;
     public statusCode: number;
+	public data: any;
 	
-	constructor(statusCode: number, message: string) {
+	constructor(statusCode: number, message: string, data?: any) {
         super(message);
 
 		this.statusCode = statusCode;
+		this.data = data;
 
         // Set the prototype explicitly.
         Object.setPrototypeOf(this, HttpError.prototype);
     }
 
-	public static internalError(): HttpError {
-		return new HttpError(500, 'internalError');
+	public static badRequest(data?: any): HttpError {
+		return new HttpError(400, 'badRequest', data);
     }
 
-	public static databaseError(): HttpError {
-		return new HttpError(503, 'databaseError');
+	public static internalError(data?: any): HttpError {
+		return new HttpError(500, 'internalError', data);
     }
 
+	public static databaseError(data?: any): HttpError {
+		return new HttpError(503, 'databaseError', data);
+    }
+
+}
+
+export class DataError extends Error {
+	public isDataError = true;
+	public data: any;
+
+	constructor(message: string, data: any) {
+        super(message);
+
+		this.data = data;
+
+        // Set the prototype explicitly.
+        Object.setPrototypeOf(this, DataError.prototype);
+    }
 }
 
 export interface IJoiErrorStringified {

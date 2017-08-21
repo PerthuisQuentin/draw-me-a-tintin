@@ -7,7 +7,7 @@ import { Promise } from 'ts-promise';
 
 import Log from './logger';
 import { Users, IUserModel } from './models/users';
-import { joiErrorStringify, HttpError } from './utils';
+import { joiErrorStringify, HttpError, DataError } from './utils';
  
 const signupSchema = Joi.object().keys({
 	email: Joi
@@ -35,10 +35,11 @@ interface ISignup {
 function verifySignupDatas(data: ISignup): Promise<ISignup> {
 	return new Promise<ISignup>((resolve, reject) => {
 		// Check form datas validity
-		Joi.validate(data, signupSchema, { abortEarly: false }, (err: any) => {
-			if(err) return reject(Boom.wrap(new Error('badRequest'), 400/*, joiErrorStringify(err)*/));
+		Joi.validate(data, signupSchema, { abortEarly: false }, (error: any) => {
+			if(error) 
+				return reject(new DataError('joiError', joiErrorStringify(error)));
 			
-
+			resolve(data);
 		});
 	});
 }
@@ -48,27 +49,29 @@ function verifyDatasAvailability(data: ISignup) : Promise<ISignup> {
 		// Check email availability
 		Users.findOne({
 			'email' :  data.email 
-		}).then((user) => {
+		})
+		.then((user: IUserModel) => {
 			if(user)
-				return reject(Boom.wrap(new Error('mailAlreadyTaken'), 412, 'mailAlreadyTaken'));
+				return reject(new Error('mailAlreadyTaken'));
 
 			// Check username availability
-			Users.findOne({ 
+			Users.findOne({
 				'username' :  data.username
-			}).then((user) => {
+			})
+			.then((user) => {
 				if(user)
-					return reject(Boom.wrap(new Error('usernameAlreadyTaken'), 412, 'usernameAlreadyTaken'));
+					return reject(new Error('usernameAlreadyTaken'));
 
 				resolve(data);
-
-			}).catch((err) => {
-				Log.error('databaseError', err);
-				reject(Boom.wrap(err, 503, 'databaseError'));
-					
+			})
+			.catch((error) => {
+				Log.error('databaseError', error);
+				reject(HttpError.databaseError());	
 			});
-		}).catch((err: any) => {
-			Log.error('databaseError', err);
-			reject(Boom.wrap(err, 503, 'databaseError'));
+		})
+		.catch((error) => {
+			Log.error('databaseError', error);
+			reject(HttpError.databaseError());
 		});
 	});
 }
@@ -92,6 +95,20 @@ function setupLocalStrategy(passport: Passport.Passport) {
 		passwordField : 'password',
 		passReqToCallback : true
 	}, (request: Express.Request, email: string, password: string, next) => {
+		verifySignupDatas(request.body)
+		.then((verifiedDatas: ISignup) => {	
+			verifyDatasAvailability(verifiedDatas)
+			.then((availableDatas: ISignup) => {
+
+			})
+			.catch((err) => {
+				next(err);
+			});
+		})
+		.catch((error: DataError) => {
+			next(null, false, 
+		});
+
 		/*verifySignup(request.body).then((data: ISignup) => {
 			var newUser = new Users();
 
@@ -138,11 +155,12 @@ function setupLocalStrategy(passport: Passport.Passport) {
 
 				next(null, user);
 			})
-			.catch((err) => {
+			.catch((error: Error) => {
 				next(HttpError.internalError());
 			});	
 		})
 		.catch((error: Error) => {
+			Log.error('databaseError', error);
 			next(HttpError.databaseError());
 		});
 	}));
