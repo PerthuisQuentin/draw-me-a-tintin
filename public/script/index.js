@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// Filter
 
-	function filterPicture(search) {
+	function filterPicture() {
 		var search = searchInput.value.toLowerCase();
 		var items;
 		if(currentDisplay == "images") {
@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		imagesContainer.style.display = "flex";
 		resourcesContainer.style.display = "none";
 		currentDisplay = "images";
+		filterPicture();
 	});
 
 	resourcesButton.addEventListener("click", function(e) {
@@ -68,5 +69,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		imagesContainer.style.display = "none";
 		resourcesContainer.style.display = "flex";
 		currentDisplay = "resources";
+		filterPicture();
 	});
 });
