@@ -7,3 +7,7 @@
     position: relative;
     float: left;
 }
+
+#availability-error {
+    display: none;
+}

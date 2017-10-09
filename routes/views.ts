@@ -34,7 +34,6 @@ Log.verbose('Loaded : [VIEW][GET] /login');
 router.get('/signup', function(request: Express.Request, response: Express.Response) {
 	request.locals.styles = ['signup.css'];
 	request.locals.scripts = ['signup.js'];
-	request.locals.message = request.flash('signup');
 
 	response.render('signup', request.locals);
 });

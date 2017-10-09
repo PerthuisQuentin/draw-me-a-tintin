@@ -10,6 +10,17 @@ auth:
   logout: "Logout"
   signup: "Signup"
 
+signup:
+  email-helper: "Email address is invalid"
+  email-availability-helper: "This email address is already used"
+  alphanumeric-helper: "Username must contain only alphanumeric characters"
+  username-min-helper: "Username must contain at least 3 characters"
+  username-max-helper: "Username must not contain more than 32 characters"
+  username-availability-helper: "This username is already used"
+  password-min-helper: "Password must contain at least 8 characters"
+  password-max-helper: "Password must not contain more than 256 characters"
+  equality-helper: "Passwords are not the same"
+
 proposals:
   make: "Propose an image"
 
@@ -23,5 +34,5 @@ admin:
 
 error:
   httpError: "Error %s"
-  wrongPassword: "The password is incorrect."
-  noUserFound: "There is no user for this email."
+  wrongPassword: "The password is incorrect"
+  noUserFound: "There is no user for this email"

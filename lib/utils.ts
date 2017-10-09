@@ -39,8 +39,15 @@ export function findFirstMatch<T>(searchIn: T[], accepted: T[]): T {
 	return firstFound;
 }
 
-export class HttpError extends Error {
+export class CustomError extends Error {
+	public isCustomError = true;
+	public type = 'custom';
+}
+
+export class HttpError extends CustomError {
+	public isCustomError = false;
 	public isHttpError = true;
+	public type = 'http';
     public statusCode: number;
 	public data: any;
 	
@@ -68,8 +75,10 @@ export class HttpError extends Error {
 
 }
 
-export class DataError extends Error {
+export class DataError extends CustomError {
+	public isCustomError = false;
 	public isDataError = true;
+	public type = 'data';
 	public data: any;
 
 	constructor(message: string, data: any) {
@@ -82,17 +91,17 @@ export class DataError extends Error {
     }
 }
 
-export interface IJoiErrorStringified {
+export interface IJoiError {
 	[error: string]: any;
 }
 
 // Transform a Joi Error in a string
-export function joiErrorStringify(err: Joi.ValidationError): IJoiErrorStringified {
+export function parseJoiError(err: Joi.ValidationError): IJoiError {
 
 	if(!err.isJoi)
 		return null;
 
-	var result: IJoiErrorStringified = {};
+	var result: IJoiError = {};
 
 	for(var detail of err.details) {
 
@@ -109,11 +118,7 @@ export function joiErrorStringify(err: Joi.ValidationError): IJoiErrorStringifie
 				break; 
 		} 
 		
-		if(value) {
-			result[error] = value;
-		} else {
-			result[error] = name;
-		}
+		result[error] = value ? value : name;
 	}
 
 	return result;

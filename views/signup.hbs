@@ -1,41 +1,62 @@
 <div class="jumbotron col-sm-6 col-sm-offset-3">
     <h1><span class="fa fa-sign-in"></span> Inscription</h1>
-    
-    {{#if message }}
-        <div class="alert alert-danger">{{ message }}</div>
-    {{/if}}
 
     <form id="signup-form" action="/signup" method="post">        
         <div id="email-group" class="form-group has-feedback">
             <label class="control-label" for="email-input">Email</label>
-            <input id="email-input" type="text" class="form-control" aria-describedby="email-status" name="email">
-            <span id="email-helper" class="help-block sr-only">Help !</span>
+            <input id="email-input" type="text" class="form-control" aria-describedby="email-status" name="email" 
+                {{#if previousFields.email }} value="{{previousFields.email}}" {{/if}}
+            >
+            <span id="email-email-helper" class="help-block sr-only">{{I18n "signup.email-helper"}}</span>
+            <span id="email-availability-helper" class="help-block sr-only">{{I18n "signup.email-availability-helper"}}</span>
             <span id="email-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
             <span id="email-status" class="sr-only">(success)</span>
         </div>
 
         <div id="username-group" class="form-group has-feedback">
             <label class="control-label" for="username-input">Nom d'utilisateur</label>
-            <input id="username-input" type="text" class="form-control" aria-describedby="username-status" name="username">
+            <input id="username-input" type="text" class="form-control" aria-describedby="username-status" name="username" 
+                {{#if previousFields.username }} value="{{previousFields.username}}" {{/if}}
+            >
+            <span id="username-alphanumeric-helper" class="help-block sr-only">{{I18n "signup.alphanumeric-helper"}}</span>
+            <span id="username-min-helper" class="help-block sr-only">{{I18n "signup.username-min-helper"}}</span>
+            <span id="username-max-helper" class="help-block sr-only">{{I18n "signup.username-max-helper"}}</span>
+            <span id="username-availability-helper" class="help-block sr-only">{{I18n "signup.username-availability-helper"}}</span>
             <span id="username-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
             <span id="username-status" class="sr-only">(success)</span>
         </div>
 
         <div id="password-group" class="form-group has-feedback">
             <label class="control-label" for="password-input">Mot de passe</label>
-            <input id="password-input" type="password" class="form-control" aria-describedby="password-status" name="password">
+            <input id="password-input" type="password" class="form-control" aria-describedby="password-status" name="password" 
+                {{#if previousFields.password }} value="{{previousFields.password}}" {{/if}}
+            >
+            <span id="password-min-helper" class="help-block sr-only">{{I18n "signup.password-min-helper"}}</span>
+            <span id="password-max-helper" class="help-block sr-only">{{I18n "signup.password-max-helper"}}</span>
             <span id="password-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
             <span id="password-status" class="sr-only">(success)</span>
         </div>
 
         <div id="confirm-password-group" class="form-group has-feedback">
             <label class="control-label" for="confirm-password-input">Confirmer le mot de passe</label>
-            <input id="confirm-password-input" type="password" class="form-control" aria-describedby="confirm-password-status" name="confirm-password">
+            <input id="confirm-password-input" type="password" class="form-control"  aria-describedby="confirm-password-status" name="confirm-password" 
+                {{#if previousFields.password }} value="{{previousFields.password}}" {{/if}}
+            >
+            <span id="confirm-password-equality-helper" class="help-block sr-only">{{I18n "signup.equality-helper"}}</span>
+            <span id="confirm-password-min-helper" class="help-block sr-only">{{I18n "signup.password-min-helper"}}</span>
+            <span id="confirm-password-max-helper" class="help-block sr-only">{{I18n "signup.password-max-helper"}}</span>
             <span id="confirm-password-feedback" class="glyphicon form-control-feedback sr-only" aria-hidden="true"></span>
             <span id="confirm-password-status" class="sr-only">(success)</span>
         </div>
 
         <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+
+        {{#if availabilityError }}
+            <div id="availability-error">
+                {{#if availabilityError.email }} <div id="email-availability-error"></div> {{/if}}
+                {{#if availabilityError.username }} <div id="username-availability-error"></div> {{/if}}
+            </div>
+        {{/if}}
     </form>
 
     <hr>

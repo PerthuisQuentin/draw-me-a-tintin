@@ -1,27 +1,38 @@
 # fr
 
-nav:
-  home: "Acceuil"
-  gallery: "Galerie"
-  proposals: "Propositions"
+admin:
+  wip: "Travaux en cours"
 
 auth:
   login: "Connexion"
   logout: "Déconnexion"
   signup: "Inscription"
 
+error:
+  httpError: "Erreur %s"
+  noUserFound: "Il n'y a pas d'utilisateur pour cet e-mail"
+  wrongPassword: "Le mot de passe est incorrect"
+
+nav:
+  gallery: "Galerie"
+  home: "Accueil"
+  proposals: "Propositions"
+
 proposals:
   make: "Proposer une image"
+
+signup:
+  alphanumeric-helper: "Le nom d'utilisateur ne doit contenir que des caractères alphanumériques"
+  email-availability-helper: "Cette adresse email est déjà utilisée"
+  email-helper: "L'adresse mail n'est pas valide"
+  equality-helper: "Les mots de passe ne sont pas identiques"
+  username-availability-helper: "Ce nom d'utilisateur est déjà utilisé"
+  username-max-helper: "Le nom d'utilisateur ne doit pas contenir plus de 32 caractères"
+  username-min-helper: "Le nom d'utilisateur doit contenir au moins 3 caractères"
+  password-max-helper: "Le mot de passe ne doit pas contenir plus de 256 caractères"
+  password-min-helper: "Le mot de passe doit contenir au moins 8 caractères"
 
 user:
   myAccount: "Mon compte"
   myCreations: "Mes créations"
   myProposals: "Mes propositions"
-
-admin:
-  wip: "Travaux en cours"
-
-error:
-  httpError: "Erreur %s"
-  wrongPassword: "Le mot de passe est incorrect."
-  noUserFound: "Il n'y a pas d'utilisateur pour cet e-mail."
