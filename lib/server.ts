@@ -1,5 +1,6 @@
 const Express = require('express');
 const BodyParser = require('body-parser');
+const Handlebars = require('handlebars');
 const ExpHbs  = require('express-handlebars');
 const Favicon = require('serve-favicon');
 
@@ -32,6 +33,27 @@ export default class Server {
             extname: '.hbs' 
         }));
         this.server.set('view engine', '.hbs');
+
+        // Handlebars helper
+        Handlebars.registerHelper('TabIndex', function(indexOrOptions: any, options: any) {
+            let index;
+
+            if(options) {
+                index = indexOrOptions;
+            } else {
+                options = indexOrOptions;
+            }
+
+            if(!options.data.tabIndex) {
+                options.data.tabIndex = 0;
+            }
+
+            if(index) {
+                options.data.tabIndex = index;
+            }
+
+            return options.data.tabIndex++;
+        });
 
         // Routes
         this.server.use('/', router);

@@ -29,7 +29,7 @@
     <body>
         <header>
             <h1>Draw me a Tintin</h1>
-            <div class="image-container-header modalable">
+            <div class="image-container-header modalable" tabindex="{{TabIndex 1}}">
                 <img class="image" src="static/image/original.png" alt="Original profile picture by Kingdom Rush">
                 <div class="textbox">
                     <p id="name" class="text">Original</p>
@@ -38,19 +38,19 @@
             </div>
             <div class="input-group search">
                 <span class="input-group-addon" id="search-addon"><span id="search-icon" class="fa fa-search"></span></span>
-                <input id="author-search" type="text" class="form-control" placeholder="Auteur">
+                <input id="author-search" type="text" class="form-control" placeholder="Auteur" tabindex="{{TabIndex}}">
             </div>
         </header>
         <section id="section">
             <div id="section-control">
                 <ul class="nav nav-pills">
-                    <li id="images-button" class="active"><a href="#">Images</a></li>
-                    <li id="resources-button"><a href="#">Ressources</a></li>
+                    <li id="images-button" class="active"><a href="#" tabindex="{{TabIndex}}">Images</a></li>
+                    <li id="resources-button"><a href="#" tabindex="{{TabIndex}}">Ressources</a></li>
                 </ul>
             </div>
             <div id="images" class="images">
                 {{#each images}}
-                    <div class="image-container modalable" author="{{this.author}}">
+                    <div class="image-container modalable" author="{{this.author}}" tabindex="{{TabIndex}}">
                         <img class="image" src="images/{{this.file}}" alt="A profile picture by {{this.author}}" height="200px" width="200px">
                         <div class="textbox">
                             <p id="name" class="text">{{this.name}}</p>
@@ -62,7 +62,7 @@
             </div>
             <div id="resources" class="images">
                 {{#each resources}}
-                    <div class="resource-container modalable" author="{{this.author}}">
+                    <div class="resource-container modalable" author="{{this.author}}" tabindex="{{TabIndex}}">
                         <img class="image" src="resources/{{this.file}}" alt="A profile picture by {{this.author}}" height="200px" width="200px">
                         <div class="textbox">
                             <p id="name" class="text">{{this.name}}</p>

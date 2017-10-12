@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
 	var searchInput = document.getElementById("author-search");
-	var imagePreview = $('.imagepreview');
+	var imagePreview = $(".imagepreview");
 
 	var imageHeader = document.getElementsByClassName("image-container-header")[0];
 	var images = document.getElementsByClassName("image-container");
@@ -16,12 +16,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// Modal
 	
-	$('.modalable').on('click', function() {
-		$('.imagepreview').attr('src', $(this).find('.image').attr('src'));
-		$('#modal-info #name').text($(this).find('#name').text());
-		$('#modal-info #author').text($(this).find('#author').text());
-		$('#modal-info #date').text($(this).find('#date').text());
-		$('#imagemodal').modal('show');   
+	$(".modalable").on("click", function() {
+		$(".imagepreview").attr("src", $(this).find(".image").attr("src"));
+		$("#modal-info #name").text($(this).find("#name").text());
+		$("#modal-info #author").text($(this).find("#author").text());
+		$("#modal-info #date").text($(this).find("#date").text());
+		$("#imagemodal").modal("show");   
+	});
+
+	$(".modalable").hover(function() {
+		$(this).find(".textbox").css("opacity","1");
+	}, function() {
+		$(this).find(".textbox").css("opacity","0");
 	});
 
 	// Filter
@@ -70,5 +76,42 @@ document.addEventListener("DOMContentLoaded", function() {
 		resourcesContainer.style.display = "flex";
 		currentDisplay = "resources";
 		filterPicture();
+	});
+
+	// Navigation with tabulation
+
+	var lastTextbox;
+
+	$(window).keyup(function(e) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+		var focus = $(":focus").first();
+		var textbox;
+		var isModalable = false;
+
+		if(focus.hasClass("modalable")) {
+			textbox = focus.find(".textbox").first();
+			isModalable = true;
+		}
+
+		if(lastTextbox && !lastTextbox.is(textbox)) {
+			lastTextbox.css("opacity", "0");
+		}
+
+		if(isModalable) {
+			if(code === 9) {
+				textbox.css("opacity", "1");
+				lastTextbox = textbox;
+			} else if(code === 13) {
+				focus.click();
+			}
+		}
+	});
+
+	$(window).mouseup(function(e) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+
+		if(lastTextbox) {
+			lastTextbox.css("opacity", "0");
+		}
 	});
 });

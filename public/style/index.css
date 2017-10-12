@@ -120,10 +120,6 @@ section {
 	justify-content: center;
 }
 
-.textbox:hover {
-	opacity:1;
-}
-
 .text {
 	font: 400 20px/1.2 'Sansita one', Georgia, serif;
 	color: white;
