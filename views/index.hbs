@@ -29,13 +29,13 @@
     <body>
         <header>
             <h1>Draw me a Tintin</h1>
-            <div class="image-container-header modalable" tabindex="{{TabIndex 1}}">
+            <figure class="image-container-header modalable" tabindex="{{TabIndex 1}}">
                 <img class="image" src="static/image/original.png" alt="Original profile picture by Kingdom Rush">
-                <div class="textbox">
+                <figcaption class="textbox">
                     <p id="name" class="text">Original</p>
                     <p id="author" class="text">by Kingdom Rush</p>
-                </div>
-            </div>
+                </figcaption>
+            </figure>
             <div class="input-group search">
                 <span class="input-group-addon" id="search-addon"><span id="search-icon" class="fa fa-search"></span></span>
                 <input id="author-search" type="text" class="form-control" placeholder="Auteur" tabindex="{{TabIndex}}">
@@ -50,26 +50,26 @@
             </div>
             <div id="images" class="images">
                 {{#each images}}
-                    <div class="image-container modalable" author="{{this.author}}" tabindex="{{TabIndex}}">
+                    <figure class="image-container modalable" author="{{this.author}}" tabindex="{{TabIndex}}">
                         <img class="image" src="images/{{this.file}}" alt="A profile picture by {{this.author}}" height="200px" width="200px">
-                        <div class="textbox">
+                        <figcaption class="textbox">
                             <p id="name" class="text">{{this.name}}</p>
                             <p id="author" class="text">by {{this.author}}</p>
                             <p id="date" class="text">{{this.date}}</p>
-                        </div>
-                    </div>
+                        </figcaption>
+                    </figure>
                 {{/each}}
             </div>
             <div id="resources" class="images">
                 {{#each resources}}
-                    <div class="resource-container modalable" author="{{this.author}}" tabindex="{{TabIndex}}">
+                    <figure class="resource-container modalable" author="{{this.author}}" tabindex="{{TabIndex}}">
                         <img class="image" src="resources/{{this.file}}" alt="A profile picture by {{this.author}}" height="200px" width="200px">
-                        <div class="textbox">
+                        <figcaption class="textbox">
                             <p id="name" class="text">{{this.name}}</p>
                             <p id="author" class="text">by {{this.author}}</p>
                             <p id="date" class="text">{{this.date}}</p>
-                        </div>
-                    </div>
+                        </figcaption>
+                    </figure>
                 {{/each}}
             </div>
             <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

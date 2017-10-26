@@ -24,12 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		$("#imagemodal").modal("show");   
 	});
 
-	$(".modalable").hover(function() {
-		$(this).find(".textbox").css("opacity","1");
-	}, function() {
-		$(this).find(".textbox").css("opacity","0");
-	});
-
 	// Filter
 
 	function filterPicture() {
@@ -76,42 +70,5 @@ document.addEventListener("DOMContentLoaded", function() {
 		resourcesContainer.style.display = "flex";
 		currentDisplay = "resources";
 		filterPicture();
-	});
-
-	// Navigation with tabulation
-
-	var lastTextbox;
-
-	$(window).keyup(function(e) {
-		var code = (e.keyCode ? e.keyCode : e.which);
-		var focus = $(":focus").first();
-		var textbox;
-		var isModalable = false;
-
-		if(focus.hasClass("modalable")) {
-			textbox = focus.find(".textbox").first();
-			isModalable = true;
-		}
-
-		if(lastTextbox && !lastTextbox.is(textbox)) {
-			lastTextbox.css("opacity", "0");
-		}
-
-		if(isModalable) {
-			if(code === 9) {
-				textbox.css("opacity", "1");
-				lastTextbox = textbox;
-			} else if(code === 13) {
-				focus.click();
-			}
-		}
-	});
-
-	$(window).mouseup(function(e) {
-		var code = (e.keyCode ? e.keyCode : e.which);
-
-		if(lastTextbox) {
-			lastTextbox.css("opacity", "0");
-		}
 	});
 });
