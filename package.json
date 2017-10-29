@@ -1,6 +1,6 @@
 {
 	"name": "draw-me-a-tintin",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "A private joke website",
   	"main": "index.ts",
 	"scripts": {

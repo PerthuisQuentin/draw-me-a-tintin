@@ -24,6 +24,18 @@ document.addEventListener("DOMContentLoaded", function() {
 		$("#imagemodal").modal("show");   
 	});
 
+	$(window).keyup(function(e) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+
+		if(code === 13) {
+			var focused = $(":focus");
+			
+			if(focused.hasClass("modalable")) {
+				focused.click();
+			}
+		}
+	});
+
 	// Filter
 
 	function filterPicture() {
