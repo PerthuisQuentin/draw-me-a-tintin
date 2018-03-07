@@ -1,3 +1,7 @@
 # Draw me a Tintin
 
-NodeJS based website for a private joke :)
+Website born from a private joke with my profile picture
+
+Now it's a gallery app with react-redux
+
+It also serves as a technologies test

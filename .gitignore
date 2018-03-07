@@ -1,5 +1,3 @@
 node_modules/
-build/
-*.log
-config.prod.yml
-config.dev.yml
+build/*.js
+.vscode/

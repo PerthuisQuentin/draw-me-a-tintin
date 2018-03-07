@@ -1,0 +1,23 @@
+{
+    "env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended"
+	],
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true
+		}
+	},
+    "rules": {
+        "indent": ["warn", "tab", { "SwitchCase": 1 }],
+		"linebreak-style": ["error", "unix"],
+		"quotes" : ["warn", "single"],
+		"semi":  ["error", "always"]
+    }
+}
