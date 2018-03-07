@@ -2,30 +2,30 @@
 	"name": "draw-me-a-tintin",
 	"version": "1.2.1",
 	"description": "A private joke website",
-  	"main": "index.ts",
+	"main": "index.ts",
 	"scripts": {
 		"prestart": "npm run build",
 		"start": "node ./build/app.js",
 		"dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
 		"build": "./node_modules/.bin/tsc"
-  	},
-  	"dependencies": {
-		"promise": "7.1.x",
-		"handlebars": "4.0.x",
-		"express": "4.15.x",
-		"body-parser": "1.17.x",
-		"express-handlebars" : "3.0.x",
-		"serve-favicon" : "2.4.x",
-		"boom": "4.3.x",
-		"winston": "2.3.x",
-		"js-yaml": "3.8.x",
-		"moment": "2.18.x",
-		"bcrypt": "1.0.x"
 	},
-  	"devDependencies": {
-		"@types/node": "7.0.x",
-		"nodemon": "1.11.x",
-		"ts-node": "3.0.x",
-		"typescript": "2.3.x"
-  	}
+	"dependencies": {
+		"promise": "^8.0.1",
+		"handlebars": "^4.0.11",
+		"express": "^4.16.2",
+		"body-parser": "^1.18.2",
+		"express-handlebars": "^3.0.0",
+		"serve-favicon": "^2.4.5",
+		"boom": "^7.2.0",
+		"winston": "^2.4.0",
+		"js-yaml": "^3.11.0",
+		"moment": "^2.21.0",
+		"bcrypt": "^1.0.3"
+	},
+	"devDependencies": {
+		"@types/node": "^9.4.6",
+		"nodemon": "^1.17.1",
+		"ts-node": "^5.0.1",
+		"typescript": "^2.7.2"
+	}
 }
